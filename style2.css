@@ -2,13 +2,20 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Arial', sans-serif;
-    background-color: #000;
+    background: linear-gradient(135deg, #000 30%, #540000 100%);
     color: #fff;
     text-align: center;
+    min-height: 100vh; /* Full height /
+    display: flex;
+    flex-direction: column;
+    justify-content: center; / Center content vertically /
 }
 
 h1, h2 {
-    color: #ff0000; /* Red headers /
+    color: #ff4500; / Brighter red for headers /
+    margin: 20px 0;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
 }
 
 form {
@@ -18,38 +25,53 @@ form {
     width: 90%;
     max-width: 400px;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(255, 0, 0, 0.2); / Red shadow for emphasis /
+    box-shadow: 0 4px 8px rgba(255, 0, 0, 0.5); / More pronounced red shadow /
+    backdrop-filter: blur(5px); / Soft blur effect /
 }
 
 input[type="text"], input[type="number"] {
-    width: calc(100% - 22px); / Full width minus padding /
+    width: calc(100% - 22px);
     padding: 10px;
-    margin: 8px 0;
-    border: 1px solid #ff0000; / Red border /
+    margin: 10px 0;
+    border: 2px solid #ff4500; / Brighter red border /
     border-radius: 4px;
-    background-color: #333;
+    background-color: rgba(51, 51, 51, 0.8); / Slightly transparent background /
     color: #fff;
+    font-size: 1rem;
+}
+
+input[type="text"]::placeholder, input[type="number"]::placeholder {
+    color: #fff;
+    opacity: 0.7;
 }
 
 button {
     width: 100%;
-    padding: 10px;
-    margin: 8px 0;
+    padding: 12px;
+    margin-top: 15px;
     border: none;
     border-radius: 4px;
-    background-color: #ff0000; / Red button /
+    background: linear-gradient(45deg, #ff4500, #ff0000); / Gradient background /
     color: #fff;
     font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-button:hover {
-    background-color: #e60000; / Darker red on hover /
+button:hover, button:focus {
+    transform: translateY(-3px); / Slight lift effect /
+    box-shadow: 0 6px 12px rgba(255, 0, 0, 0.5);
 }
 
 / Styling for the total volume display /
 #totalVolume {
     font-weight: bold;
-    color: #ff0000; / Red color for emphasis */
+    color: #ff4500; / Consistent with header color /
+    font-size: 1.2rem;
+}
+
+/ Additional global styling for a cleaner look */
+section {
+    padding: 30px 0;
 }
