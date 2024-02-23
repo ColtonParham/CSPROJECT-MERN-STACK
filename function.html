@@ -1,1 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Tracker</title>
+    <link rel="stylesheet" href="style2.css">
+</head>
+<body>
+    <h1>Gym Tracker</h1>
+    
+    <!-- Form for logging lifts -->
+    <h2>Log Your Lift</h2>
+    <form id="logForm">
+        <input type="text" id="liftName" placeholder="Lift Name" required>
+        <input type="number" id="liftWeight" placeholder="Weight (lbs)" required>
+        <input type="number" id="reps" placeholder="Repetitions" required>
+        <button type="submit">Add Lift</button>
+    </form>
+    
+    <!-- Display total volume -->
+    <h2>Total Volume: <span id="totalVolume">0</span> lbs</h2>
+    
+    <script>
+        document.getElementById('logForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent form submission to server
+            
+            // Get lift details
+            var liftName = document.getElementById('liftName').value;
+            var liftWeight = parseInt(document.getElementById('liftWeight').value, 10);
+            var reps = parseInt(document.getElementById('reps').value, 10);
+            
+            // Calculate volume
+            var volume = liftWeight * reps;
+            
+            // Update total volume
+            var totalVolumeElement = document.getElementById('totalVolume');
+            var totalVolume = parseInt(totalVolumeElement.innerText, 10);
+            totalVolume += volume;
+            totalVolumeElement.innerText = totalVolume;
+            
+            // Reset form fields
+            document.getElementById('logForm').reset();
+        });
+    </script>
+</body>
+</html>
 
