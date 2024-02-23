@@ -1,76 +1,91 @@
-/* Reset CSS */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-  }
+}
   
-  body {
+body {
     font-family: Arial, sans-serif;
-    background-color:#72788D;
-
-  }
+    background: linear-gradient(to right, #B22222, #000); /* Gradient background */
+}
   
-  .container {
+.container {
     width: 80%;
     margin: 0 auto;
     padding: 20px 0;
-  }
+    text-align: center; /* Center-aligns container content */
+}
   
-  header {
+header {
     font-family: "Black Ops One";
-    font-weight: 100;
-    font-style: normal;
-    background-color: #7A89C2;
+    background-color: #8B0000; /* Dark red */
     color: #fff;
-    
-    
-  }
-  header::after{
+}
+  
+header::after {
     content: '';
     display: table;
     clear: both;
-  }
-  h1{
+}
+  
+h1 {
     float: left;
     padding: 10px;
-    padding: 10px 0;
-    
-  }
-  nav{
+}
+  
+nav {
     float: right;
-  }
-  nav ul{
+}
+  
+nav ul {
     margin: 0;
     padding: 0;
     list-style: none;
-  }
-  nav li{
+}
+  
+nav li {
     display: inline-block;
     margin-left: 75px;
     padding-top: 25px;
-
-  }
+}
   
-  
-  
-  header nav ul li a {
+header nav ul li a {
     color: #fff;
     text-decoration: none;
-  }
+    transition: color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+/* Hover effect for navigation links */
+header nav ul li a:hover {
+    color: #FF4500; /* Or any other color you prefer */
+}
   
-  section {
+section {
     padding: 50px 0;
-  }
+}
   
-  section h2 {
-    margin-bottom: 20px;
-  }
+section h2, section p {
+    color: #fff; /* Text color */
+    margin-bottom: 20px; /* Adds space below headings */
+}
+
+/* Enhancing text appearance in sections */
+section h2 {
+    font-size: 2em; /* Larger headings */
+    margin-bottom: 15px; /* Spacing below headings */
+}
+
+section p {
+    font-size: 1.2em; /* Larger paragraph text */
+    line-height: 1.5; /* Improved line spacing */
+    max-width: 75%; /* Limits max width of paragraphs */
+    margin: auto; /* Centers paragraphs */
+}
   
-  footer {
-    background-color: #333;
+footer {
+    background-color: #000;
     color: #fff;
     text-align: center;
     padding: 10px 0;
-  }
+}
   
