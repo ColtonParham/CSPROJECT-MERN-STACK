@@ -7,56 +7,104 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gym Tracker</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="main.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>Strong Squad</h1>
-            <nav>
-                <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#services">Start Tracking</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav>
+    <div class="sidenav">
+        <div class = "top">
+            <div class = "logo">
+                <i class = "bx bx-dumbbell"></i>
+                <span>StrongSquad</span>
+            </div>
+            <i class ="bx bx-menu" id = btn></i>
         </div>
-    </header>
+        <div class = "user">
+            <img src = "Headshot.png" alt = "me" class = "user-img">
+            <div>
+                <p class = "bold">Julian M.</p>
+                <p>Admin</p>
+            </div>
+        </div>
+        <ul>
+            <li>
+                <a href="#">
+                    <i class="bx bxs-grid-alt"></i>
+                    <span class ="nav-item">Dashboard</span>
+                </a>
+                <span class="tooltip">Dashboard</span>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="bx bxs-info-circle"></i>
+                    <span class ="nav-item">About</span>
+                </a>
+                <span class="tooltip">About</span>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="bx bxs-food-menu"></i>
+                    <span class ="nav-item">Services</span>
+                </a>
+                <span class="tooltip">Services</span>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="bx bxs-contact"></i>
+                    <span class ="nav-item">Contact</span>
+                </a>
+                <span class="tooltip">Contact</span>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="bx bx-log-out"></i>
+                    <span class ="nav-item">Logout</span>
+                </a>
+                <span class="tooltip">Logout</span>
+            </li>
+        </ul>
+        
+    </div>
+    
+    <div class="main-content">
+        <div class = "container">
+            <h1>Welcome to our Gym Tracker</h1>
+            <h1>RightSide</h1>
+            
+        </div>
 
-    <section id="home">
-        <div class="container">
-            <h2>Welcome to our Gym Tracker</h2>
+        <section id="home">
+            <hr>
             <p>Track your lifts, monitor your progress, and analyze your performance.</p>
             <a href="function.html" class="btn">Get Started</a>
-        </div>
-    </section>
-
-    <section id="services">
-        <div class="container">
-            <h2>Our Services</h2>
-            <p>Our platform allows you to log your lifts, calculate total volume, and estimate calories burned. Set goals, track your trajectory, and share your achievements with friends.</p>
-        </div>
-    </section>
-
-    <section id="about">
-        <div class="container">
-            <h2>About Us</h2>
-            <p>We're dedicated to helping you achieve your fitness goals by providing a comprehensive tracking tool that's not just a log but a companion on your fitness journey.</p>
-        </div>
-    </section>
-
-    <section id="contact">
-        <div class="container">
-            <h2>Contact Us</h2>
-            <p>Have questions or feedback? Reach out to us and let's get stronger together.</p>
-        </div>
-    </section>
-
+        
+        </section>
+        
+        
+    
+        
+        
+        
+        
+        
+    
+    </div>
+    
     <footer>
-        <div class="container">
+      
             <p>&copy; 2024 Strong Squad. All rights reserved.</p>
-        </div>
+        
     </footer>
 </body>
+
+<script>
+    let btn = document.querySelector('#btn')
+    let sidenav = document.querySelector('.sidenav')
+
+    btn.onclick=function()
+    {
+        sidenav.classList.toggle('active')
+    };
+</script>
 </html>
