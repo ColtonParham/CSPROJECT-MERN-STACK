@@ -1,91 +1,155 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-  
-body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(to right, #B22222, #000); /* Gradient background */
+.user-img{
+  width: 50px;
+  border-radius: 100%;
+  border: 1px solid #eee;
 }
-  
-.container {
-    width: 80%;
-    margin: 0 auto;
-    padding: 20px 0;
-    text-align: center; /* Center-aligns container content */
+.sidenav{
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 80px;
+  background-color: #342d2d;
+  padding: .4rem .8rem;
+  transition: all 0.5s ease;
+
 }
-  
-header {
-    font-family: "Black Ops One";
-    background-color: #8B0000; /* Dark red */
-    color: #fff;
-}
-  
-header::after {
-    content: '';
-    display: table;
-    clear: both;
-}
-  
-h1 {
-    float: left;
-    padding: 10px;
-}
-  
-nav {
-    float: right;
-}
-  
-nav ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-  
-nav li {
-    display: inline-block;
-    margin-left: 75px;
-    padding-top: 25px;
-}
-  
-header nav ul li a {
-    color: #fff;
-    text-decoration: none;
-    transition: color 0.3s ease; /* Smooth transition for hover effect */
+.sidenav.active ~ .main-content{
+  left:250px;
+  width: calc(100%-250px);
 }
 
-/* Hover effect for navigation links */
-header nav ul li a:hover {
-    color: #FF4500; /* Or any other color you prefer */
-}
-  
-section {
-    padding: 50px 0;
-}
-  
-section h2, section p {
-    color: #fff; /* Text color */
-    margin-bottom: 20px; /* Adds space below headings */
+.sidenav.active{
+  width:250px;
 }
 
-/* Enhancing text appearance in sections */
-section h2 {
-    font-size: 2em; /* Larger headings */
-    margin-bottom: 15px; /* Spacing below headings */
+.sidenav #btn{
+  position: absolute;
+  color:#fff;
+  top: .4rem;
+  left: 50%;
+  font-size: 1.2 rem;
+  line-height: 50px;
+  transform: translateX(-50%);
+  cursor:pointer;
+}
+.sidenav.active #btn{
+  left: 90%;
+}
+.sidenav .top .logo{
+  color:#fff;
+  display: flex;
+  height: 50px;
+  width: 100%;
+  align-items: center;
+  pointer-events: none;
+  opacity: 0;
+}
+.sidenav.active .top .logo{
+  opacity: 1;
+}
+.top .logo i{
+  font-size: 2rem;
+  margin-right: 5px;
+}
+.user{
+  display: flex;
+  align-items: center;
+  margin: 1rem 0;
+}
+.user p{
+  color: #fff;
+  opacity: 1;
+  margin-left: 1rem;
 }
 
-section p {
-    font-size: 1.2em; /* Larger paragraph text */
-    line-height: 1.5; /* Improved line spacing */
-    max-width: 75%; /* Limits max width of paragraphs */
-    margin: auto; /* Centers paragraphs */
+.bold
+{
+  font-weight: 600;
 }
-  
-footer {
-    background-color: #000;
-    color: #fff;
-    text-align: center;
-    padding: 10px 0;
+.sidenav p{
+  opacity: 0;
 }
+.sidenav.active p{
+  opacity: 1;
+}
+
+.sidenav ul li{
+  position: relative;
+  list-style-type: none;
+  height: 50px;
+  width: 90%;
+  margin: 0.8rem auto;
+  line-height: 50px;
+}
+.sidenav ul li a{
+  color: #fff;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  border-radius: 0.8rem;
+}
+.sidenav ul li a:hover{
+  background-color: #fff;
+  color: rgb(67, 65, 65);
+}
+.sidenav ul li a i{
+  min-width: 50px;
+  text-align: center;
+  height: 50px;
+  border-radius: 12px;
+  line-height: 50px;
+
+}
+
+.sidenav .nav-item{
+  opacity: 0;
+}
+.sidenav.active .nav-item{
+  opacity: 1;
+}
+.sidenav ul li .tooltip{
+  position: absolute;
+  left: 125px;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0.5rem 0.8rem rgba(0,0,0,0.2);
+  border-radius: .6rem;
+  padding: .4rem 1.2rem;
+  line-height: 1.8rem;
+  z-index: 20;
+  opacity: 0;
+
+}
+.sidenav ul li:hover .tooltip{
+  opacity: 1;
+}
+.sidenav.active ul li .tooltip{
+  display: none;
+}
+
+.main-content{
+  position: relative;
+  background-color: #eee;
+  min-height: 100vh;
+  top: 0;
+  left: 80px;
+  transition: all 0.5s ease;
+  width: calc(100% - 80px);
+  padding: 1rem;
+}
+.main-content h1{
+  padding-bottom: 15px;
   
+}
+.container
+{
+  display: flex;
+  justify-content: space-around;
+}
