@@ -3,19 +3,16 @@
   padding: 0;
   box-sizing: border-box;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  list-style-type: none;
 }
-.user-img{
-  width: 50px;
-  border-radius: 100%;
-  border: 1px solid #eee;
-}
+
 .sidenav{
   position: absolute;
   top: 0;
   left: 0;
   height: 100vh;
   width: 80px;
-  background-color: #342d2d;
+  background-color: #4D3E3E;
   padding: .4rem .8rem;
   transition: all 0.5s ease;
 
@@ -59,7 +56,7 @@
   margin-right: 5px;
 }
 .user{
-  display: flex;
+  display: fixed;
   align-items: center;
   margin: 1rem 0;
 }
@@ -71,7 +68,7 @@
 
 .bold
 {
-  font-weight: 600;
+  font-weight: 00;
 }
 .sidenav p{
   opacity: 0;
@@ -145,11 +142,107 @@
   padding: 1rem;
 }
 .main-content h1{
-  padding-bottom: 15px;
-  
+  padding-bottom: 30px;
 }
-.container
+.container1      /*header*/
 {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+}
+
+.user-dropdown{
+  position: relative;
+  width: fit-content;
+  padding-right: 15px;
+}
+
+.user-dropdown-btn{
+  display:flex;
+  width:150px;
+  align-items:center;
+  justify-content:space-between;
+  padding-right: 1rem;
+}
+
+.user-dropdown-btn:hover {
+  color:#FF8686
+}
+
+
+.user-img{
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  border: 1px solid #eee;
+}
+
+.user-dropdown-list{
+  display:none;
+  position:absolute;
+  width: 150px;
+  background-color:#CCCCCC;
+  
+  box-shadow: 0 0.5rem 0.8rem rgba(0,0,0,0.2);
+
+}
+.user-dropdown-btn:hover +.user-dropdown-list ,.user-dropdown-list:hover{
+  display:block;
+}
+
+.user-dropdown-list-item{
+  padding: .5rem 1rem 1rem 1rem;
+  cursor: pointer;
+}
+.user-dropdown-list-item:hover{
+  background-color:#4D3E3E;
+  color: white;
+  
+}
+.user-dropdown-list-item a{
+  text-decoration: none;
+  align-items:center;
+  color: inherit;
+}
+
+
+.container2
+{
+  padding-top: 20px;
+  min-height: 100px;
+  display:grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-auto-rows:minmax(150px, auto);
+  gap: 15px;
+  grid-template-areas: "button1";
+
+}
+.box{
+  background-color: #CCCCCC;
+  padding: 15px;
+  border-radius:20px;
+}
+.button{
+  padding:15px;
+  background-color:#FF8686;
+  border-radius: 20px;
+  text-decoration:none;
+  color:#ffffff;
+  font-size: 1.5rem
+}
+.button p{
+  padding-top:5px;
+  font-size: 1rem;
+}
+.container2 :hover{
+  background-color:#886E6E
+}
+
+.box:nth-child(4) /*friends list*/
+{
+  background-color: #886E6E;
+  grid-column-start:4;
+  grid-row: 1/ 5;
+  font-size: 1.5rem;
+  color:#ffffff;
+
 }
