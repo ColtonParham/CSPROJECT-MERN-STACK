@@ -1,9 +1,10 @@
-import mongoose  from "mongoose";
-import app from "./app.js"
+
+const mongoose = require('mongoose');
+const app = require('./app');
 
 (async() => {
     try{
-        await mongoose.connect("mongodb://localhost:27017/gitsteup")
+        await mongoose.connect("mongodb://localhost:27017/gitsetup")
         console.log("DATABASE CONNECT");
 
         const onListening = () => {
@@ -14,7 +15,7 @@ import app from "./app.js"
     }
     catch (error) {
         console.error("error: ", error);
-        throw err; 
+        throw error; 
     }
     
 })()
