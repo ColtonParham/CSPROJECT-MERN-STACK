@@ -5,6 +5,11 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   list-style-type: none;
 }
+:root{
+  --dark: #4D3E3E;
+  --light: #886E6E;
+  --accent: #FF8686;
+}
 
 .sidenav{
   position: absolute;
@@ -12,7 +17,7 @@
   left: 0;
   height: 100vh;
   width: 80px;
-  background-color: #4D3E3E;
+  background-color: var(--dark);
   padding: .4rem .8rem;
   transition: all 0.5s ease;
 
@@ -165,7 +170,7 @@
 }
 
 .user-dropdown-btn:hover {
-  color:#FF8686
+  color:var(--accent)
 }
 
 
@@ -194,7 +199,7 @@
   cursor: pointer;
 }
 .user-dropdown-list-item:hover{
-  background-color:#4D3E3E;
+  background-color:var(--dark);
   color: white;
   
 }
@@ -223,7 +228,7 @@
 }
 .button{
   padding:15px;
-  background-color:#FF8686;
+  background-color:var(--accent);
   border-radius: 20px;
   text-decoration:none;
   color:#ffffff;
@@ -234,12 +239,12 @@
   font-size: 1rem;
 }
 .container2 :hover{
-  background-color:#886E6E
+  background-color:var(--light)
 }
 
 .box:nth-child(4) /*friends list*/
 {
-  background-color: #886E6E;
+  background-color: var(--light);
   grid-column-start:4;
   grid-row: 1/ 5;
   font-size: 1.5rem;
