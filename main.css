@@ -127,9 +127,11 @@
   line-height: 1.8rem;
   z-index: 20;
   opacity: 0;
+  display:none;
 
 }
 .sidenav ul li:hover .tooltip{
+  display:block;
   opacity: 1;
 }
 .sidenav.active ul li .tooltip{
