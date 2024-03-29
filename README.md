@@ -1,6 +1,6 @@
 # CSPROJECT
 
-# Attribument
+# Attribution
 This repository was built off of and uses code from Dave Gray.
 Original code is from this repository: https://github.com/gitdagray/mongo_async_crud
 
