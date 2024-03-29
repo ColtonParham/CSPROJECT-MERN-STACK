@@ -3,7 +3,7 @@ const router = express.Router();
 const path = require('path');
 
 router.get('^/$|/main(.html)?', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'views', 'index.html'));
+    res.sendFile(path.join(__dirname, '..', 'views', 'main.html'));
 });
 
 router.get('/login(.html)?', (req, res) => {
@@ -18,11 +18,6 @@ router.get('/signUp(.html)?', (req, res) => {
 
 router.get('/function(.html)?', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'views', 'function.html'));
-    console.log("index")
-});
-
-router.get('/main(.html)?', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'views', 'main.html'));
     console.log("index")
 });
 
