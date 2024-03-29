@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Max Calculator</title>
+    <link rel="stylesheet" href="css/style3.css">
+</head>
+<body>
+    <h1>Max Lift Calculator</h1>
+    <p>Calculate your estimated max lift based on your 5 rep max.</p>
+
+    <input type="number" id="fiveRepMax" placeholder="Enter your 5 rep max">
+    <!-- Dropdown for formula selection -->
+    <select id="formulaSelect">
+        <option value="epley">Epley</option>
+        <option value="brzycki">Brzycki</option>
+    </select>
+    <button onclick="calculateMax()">Calculate</button>
+    
+    <div id="result"></div>
+
+    <!-- History of Calculations -->
+    <h2>Calculation History</h2>
+    <ul id="historyList"></ul>
+    
+    <script>
+        function calculateMax() {
+            var fiveRepMax = document.getElementById('fiveRepMax').value;
+            var formula = document.getElementById('formulaSelect').value;
+            var oneRepMax;
+    
+            switch(formula) {
+                case "epley":
+                    oneRepMax = fiveRepMax * (1 + (5 / 30)); // Epley formula
+                    break;
+                case "brzycki":
+                    oneRepMax = fiveRepMax / (1.0278 - (0.0278 * 5)); // Brzycki formula
+                    break;
+                default:
+                    oneRepMax = 0;
+            }
+    
+            var resultText = `Your estimated 1 rep max is: ${oneRepMax.toFixed(2)} lbs using the ${formula.charAt(0).toUpperCase() + formula.slice(1)} formula.`;
+            document.getElementById('result').innerHTML = resultText;
+    
+            // Append to history
+            addToHistory(resultText);
+        }
+    
+        function addToHistory(resultText) {
+            var historyList = document.getElementById('historyList');
+            var newItem = document.createElement('li');
+            newItem.textContent = resultText;
+            historyList.appendChild(newItem);
+    
+            // Optionally, limit history list length (e.g., last 5 calculations)
+            while(historyList.children.length > 5) {
+                historyList.removeChild(historyList.firstChild);
+            }
+        }
+    </script>
