@@ -167,23 +167,78 @@
     justify-content:center;
     border-radius: 20px;
     color: white;
+    display:flex;
+    flex-direction:column;
+    align-items: center;
   }
   .ProfileImg{
-    height: 4rem;
     border-radius: 50%;
+    margin-top: 1rem;
+    height:20rem;
+    width:20rem;
+    /*margin-left:35%;*/
+    margin-bottom:1rem;
+    overflow:hidden;
+  }
+  .submitBtn{
+    margin-top: 10px;
+    margin-left:10px;
+    background-color: var(--dark);
+    color: white;
+    border: none;
+    border-radius:6px;
+    padding: 8px;
+  }
+  .submitBtn:hover{
+    background-color: var(--accent);
+    color: black;
+    cursor:pointer;
+  }
+  .uploadBtn{
+    background-color: var(--dark);
+    color: white;
+    border: none;
+    border-radius:6px;
+    padding:8px;
+  }
+  .uploadBtn:hover{
+    background-color: var(--accent);
+    color: black;
+    cursor:pointer;
   }
 
   .cardHeader{
+    width:100%;
     background-color: var(--dark);
     padding:10px;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
+  }
+  .cardBody{
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+    padding:10px;
   }
   .UserCard{
     background-color: var(--light);
     border-radius: 20px;
     color: white;
     padding-bottom:20px;
-
   }
+  .UserCardBody{
+    padding:10px;
+  }
+  .field{
+    padding:10px;
+  }
+  .box{
+    border-radius: 7px;
+    width: 100%;
+    height: 30px;
+    font-size: 15px;
+    border: none;
+    padding-left: 10px;
+  }
+
 
