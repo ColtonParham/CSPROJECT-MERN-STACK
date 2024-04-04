@@ -195,7 +195,6 @@
 .user-dropdown-btn:hover +.user-dropdown-list ,.user-dropdown-list:hover{
   display:block;
 }
-
 .user-dropdown-list-item{
   padding: .5rem 1rem 1rem 1rem;
   cursor: pointer;
@@ -212,7 +211,7 @@
 }
 
 
-.container2
+.BodyContainer
 {
   padding-top: 20px;
   min-height: 100px;
@@ -221,14 +220,16 @@
   grid-auto-rows:minmax(150px, auto);
   gap: 15px;
   grid-template-areas: "button1";
-
+}
+.BodyContainer :hover{
+  background-color:var(--light)
 }
 .box{
   background-color: #CCCCCC;
   padding: 15px;
   border-radius:20px;
 }
-.button{
+.StartedButton{
   padding:15px;
   background-color:var(--accent);
   border-radius: 20px;
@@ -236,13 +237,29 @@
   color:#ffffff;
   font-size: 1.5rem
 }
-.button p{
+.StartedButton p{
   padding-top:5px;
   font-size: 1rem;
 }
-.container2 :hover{
-  background-color:var(--light)
+.SecondaryButton{
+  padding:15px;
+  background-color:var(--light);
+  border-radius: 20px;
+  text-decoration:none;
+  color:#ffffff;
+  font-size: 1.5rem
 }
+.SecondaryButton:hover{
+  background-color: var(--accent);
+}
+.SecondaryButton p{
+  padding-top:5px;
+  font-size: 1rem;
+}
+.SecondaryButton p:hover{
+  background-color: var(--accent);
+}
+
 
 .box:nth-child(4) /*friends list*/
 {
@@ -251,5 +268,4 @@
   grid-row: 1/ 5;
   font-size: 1.5rem;
   color:#ffffff;
-
 }
