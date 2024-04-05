@@ -4,7 +4,11 @@ const bcrypt = require('bcrypt');
 const handleNewUser = async (req, res) => {
     const { user, pwd } = req.body;
     if (!user || !pwd) return res.status(400).json({ 'message': 'Username and password are required.' });
-
+    
+    // check for special characters within username
+    var format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+    if(format.test(user)) return res.status(400).json({ 'message': 'Username must not contain special characters'});
+    
     // check for duplicate usernames in the db
     const duplicate = await User.findOne({ username: user }).exec();
     if (duplicate) return res.sendStatus(409); //Conflict 
