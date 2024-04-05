@@ -4,14 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Max Calculator</title>
-    <link rel="stylesheet" href="maxCalc.css">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        #result, #goalFeedback { margin-top: 20px; font-size: 20px; }
+        #historyList, #goalInputSection { margin-top: 20px; }
+        canvas { margin-top: 20px; }
+        .alert { color: red; }
+    </style>
 </head>
 <body>
     <h1>Max Lift Calculator</h1>
     <p>Calculate your estimated max lift based on your 5 rep max.</p>
 
     <input type="number" id="fiveRepMax" placeholder="Enter your 5 rep max">
-    <!-- Dropdown for formula selection -->
     <select id="formulaSelect">
         <option value="epley">Epley</option>
         <option value="brzycki">Brzycki</option>
@@ -20,44 +25,142 @@
     
     <div id="result"></div>
 
-    <!-- History of Calculations -->
+    <div id="analysisResult"></div>
+    <div id="goalInputSection">
+        <input type="number" id="goalMax" placeholder="Set your goal 1 rep max">
+        <button onclick="setGoal()">Set Goal</button>
+    </div>
+    <div id="goalFeedback"></div>
+
     <h2>Calculation History</h2>
     <ul id="historyList"></ul>
+    
+    <canvas id="maxLiftChart"></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var maxLiftHistory = [];
+        var goalMax = 0;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadHistory();
+            updateChart();
+            loadGoal();
+        });
+
+        function calculateMax() {
+            var fiveRepMax = parseInt(document.getElementById('fiveRepMax').value);
+            if(isNaN(fiveRepMax) || fiveRepMax <= 0) {
+                alert("Please enter a valid number greater than 0 for your 5 rep max.");
+                return;
+            }
+            var formula = document.getElementById('formulaSelect').value;
+            var oneRepMax;
+
+            switch(formula) {
+                case "epley":
+                    oneRepMax = fiveRepMax * (1 + (5 / 30));
+                    break;
+                case "brzycki":
+                    oneRepMax = fiveRepMax / (1.0278 - (0.0278 * 5));
+                    break;
+                default:
+                    oneRepMax = 0;
+            }
+
+            maxLiftHistory.push({formula: formula, oneRepMax: oneRepMax});
+            saveHistory();
+            document.getElementById('result').innerHTML = `Your estimated 1 rep max is: ${oneRepMax.toFixed(2)} lbs`;
+            updateChart();
+            checkAchievement(oneRepMax);
+        }
+
+        function setGoal() {
+            goalMax = parseInt(document.getElementById('goalMax').value);
+            if(isNaN(goalMax) || goalMax <= 0) {
+                alert("Please enter a valid goal number greater than 0.");
+                return;
+            }
+            localStorage.setItem('goalMax', goalMax);
+            document.getElementById('goalFeedback').innerHTML = "Goal set successfully: " + goalMax + " lbs.";
+        }
+
+        function loadGoal() {
+            var storedGoal = localStorage.getItem('goalMax');
+            if(storedGoal) {
+                goalMax = parseInt(storedGoal);
+                document.getElementById('goalFeedback').innerHTML = "Current goal: " + goalMax + " lbs.";
+            }
+        }
+
+        function saveHistory() {
+            localStorage.setItem('maxLiftHistory', JSON.stringify(maxLiftHistory));
+        }
+
+        function loadHistory() {
+            var history = localStorage.getItem('maxLiftHistory');
+            if(history) {
+                maxLiftHistory = JSON.parse(history);
+            }
+        }
+
+        function updateChart() {
+            var ctx = document.getElementById('maxLiftChart').getContext('2d');
+            if (window.myChart) {
+                window.myChart.destroy();
+            }
+            window.myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: maxLiftHistory.map((_, index) => `Calculation ${index + 1}`),
+                    datasets: [{
+                        label: '1 Rep Max Over Time',
+                        backgroundColor: 'rgb(255, 99, 132)',
+                        borderColor: 'rgb(255, 99, 132)',
+                        data: maxLiftHistory.map(entry => entry.oneRepMax),
+                    }]
+                },
+                options: {}
+            });
+        }
+
+        function checkAchievement(oneRepMax) {
+            if (goalMax > 0 && oneRepMax >= goalMax) {
+                document.getElementById('goalFeedback').innerHTML += "<br>Congratulations! You've reached your goal of " + goalMax + " lbs. Set a new goal!";
+            } else if (goalMax > 0) {
+                document.getElementById('goalFeedback').innerHTML = "Current goal: " + goalMax + " lbs. Keep pushing!";
+            }
+        }
+        // Inside the <script> tag, after existing functions
+
+function updateAnalytics() {
+    var analysisResult = document.getElementById('analysisResult');
+    var lastEntry = maxLiftHistory[maxLiftHistory.length - 1];
+    var previousEntry = maxLiftHistory.length > 1 ? maxLiftHistory[maxLiftHistory.length - 2] : null;
+
+    if (!lastEntry) {
+        analysisResult.innerHTML = "No data available for analysis.";
+        return;
+    }
+
+    var improvement = previousEntry ? (lastEntry.oneRepMax - previousEntry.oneRepMax).toFixed(2) : "N/A";
+    var improvementMessage = improvement === "N/A" ? "Enter more data to see your progress." : `Improvement from last entry: ${improvement} lbs.`;
+
+    var goalProgress = goalMax > 0 ? ((lastEntry.oneRepMax / goalMax) * 100).toFixed(2) : "N/A";
+    var goalMessage = goalMax > 0 ? `You are ${goalProgress}% towards your goal of ${goalMax} lbs.` : "Set a goal to track your progress.";
+
+    var recommendation = "";
+    if (improvement > 0) {
+        recommendation = "Great job! Keep following your current regimen.";
+    } else if (improvement < 0) {
+        recommendation = "Looks like your performance has decreased. Consider reviewing your training and recovery strategies.";
+    } else {
+        recommendation = "Keep consistent and aim for progressive overload to improve.";
+    }
+
+    analysisResult.innerHTML = `<p>${improvementMessage}</p><p>${goalMessage}</p><p>${recommendation}</p>`;
+}
+
+    </script>
 </body>
-<script>
-    function calculateMax() {
-        var fiveRepMax = document.getElementById('fiveRepMax').value;
-        var formula = document.getElementById('formulaSelect').value;
-        var oneRepMax;
-
-        switch(formula) {
-            case "epley":
-                oneRepMax = fiveRepMax * (1 + (5 / 30)); // Epley formula
-                break;
-            case "brzycki":
-                oneRepMax = fiveRepMax / (1.0278 - (0.0278 * 5)); // Brzycki formula
-                break;
-            default:
-                oneRepMax = 0;
-        }
-
-        var resultText = `Your estimated 1 rep max is: ${oneRepMax.toFixed(2)} lbs using the ${formula.charAt(0).toUpperCase() + formula.slice(1)} formula.`;
-        document.getElementById('result').innerHTML = resultText;
-
-        // Append to history
-        addToHistory(resultText);
-    }
-
-    function addToHistory(resultText) {
-        var historyList = document.getElementById('historyList');
-        var newItem = document.createElement('li');
-        newItem.textContent = resultText;
-        historyList.appendChild(newItem);
-
-        // Optionally, limit history list length (e.g., last 5 calculations)
-        while(historyList.children.length > 5) {
-            historyList.removeChild(historyList.firstChild);
-        }
-    }
-</script>
 </html>
