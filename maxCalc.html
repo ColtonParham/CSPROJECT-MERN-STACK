@@ -1,62 +1,79 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Max Calculator</title>
-    <link rel="stylesheet" href="maxCalc.css">
-</head>
-<body>
-    <h1>Max Lift Calculator</h1>
-    <p>Calculate your estimated max lift based on your 5 rep max.</p>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-    <input type="number" id="fiveRepMax" placeholder="Enter your 5 rep max">
-    <!-- Dropdown for formula selection -->
-    <select id="formulaSelect">
-        <option value="epley">Epley</option>
-        <option value="brzycki">Brzycki</option>
-    </select>
-    <button onclick="calculateMax()">Calculate</button>
-    
-    <div id="result"></div>
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #4D3E3E;
+    color: #f0f0f0;
+    display: flex;
+    flex-direction: column; /* Ensure vertical alignment */
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+}
 
-    <!-- History of Calculations -->
-    <h2>Calculation History</h2>
-    <ul id="historyList"></ul>
-    
-    <script>
-        function calculateMax() {
-            var fiveRepMax = document.getElementById('fiveRepMax').value;
-            var formula = document.getElementById('formulaSelect').value;
-            var oneRepMax;
-    
-            switch(formula) {
-                case "epley":
-                    oneRepMax = fiveRepMax * (1 + (5 / 30)); // Epley formula
-                    break;
-                case "brzycki":
-                    oneRepMax = fiveRepMax / (1.0278 - (0.0278 * 5)); // Brzycki formula
-                    break;
-                default:
-                    oneRepMax = 0;
-            }
-    
-            var resultText = `Your estimated 1 rep max is: ${oneRepMax.toFixed(2)} lbs using the ${formula.charAt(0).toUpperCase() + formula.slice(1)} formula.`;
-            document.getElementById('result').innerHTML = resultText;
-    
-            // Append to history
-            addToHistory(resultText);
-        }
-    
-        function addToHistory(resultText) {
-            var historyList = document.getElementById('historyList');
-            var newItem = document.createElement('li');
-            newItem.textContent = resultText;
-            historyList.appendChild(newItem);
-    
-            // Optionally, limit history list length (e.g., last 5 calculations)
-            while(historyList.children.length > 5) {
-                historyList.removeChild(historyList.firstChild);
-            }
-        }
-    </script>
+h1 {
+    color: #FF8686;
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+    text-shadow: 2px 2px 4px #000;
+}
+
+p {
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+    color: #f0f0f0;
+}
+
+input, button {
+    font-size: 1rem;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    margin: 0.5rem 0;
+    transition: all 0.3s ease;
+    width: 50%; /* Ensure full width */
+}
+
+input {
+    background-color: #292929;
+    color: #ffffff;
+    margin-right: 0;
+}
+
+button {
+    background-color: #886E6E;
+    color: #ffffff;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+button:hover {
+    background-color: #FF8686;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+#result {
+    margin-top: 2rem;
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 1rem;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    color: #ff4545;
+    font-weight: bold;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    body, input, button {
+        width: 90%;
+    }
+}
