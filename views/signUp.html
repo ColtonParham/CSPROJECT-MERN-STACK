@@ -25,13 +25,20 @@
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "register");
                 xhr.onload = function(event){
-                    if (xhr.status==409) {
-                        alert("Username taken, please try another username"); // raw response
-                    } else if (xhr.status==201) {
-                        alert("Account created, redirecting to login");
-                        window.location.href = "/login";
-                    } else
-                        alert("Unknown error! Status: " + xhr.status + " Response: " + event.target.response);
+                    switch (xhr.status) {
+                        case 409:
+                            alert("Username taken, please try another username"); // raw response
+                            break;
+                        case 400:
+                            alert("Error: " + event.target.response)
+                            break;
+                        case 201:
+                            alert("Account created, redirecting to login");
+                            window.location.href = "/login";
+                            break;
+                        default:
+                            alert("Unknown error! Status: " + xhr.status + " Response: " + event.target.response);
+                    }  
                 };
                 // or onerror, onabort
                 let form = document.forms[0];
