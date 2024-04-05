@@ -165,8 +165,12 @@
   display:flex;
   width:150px;
   align-items:center;
-  justify-content:space-between;
+  justify-content:center;
   padding-right: 1rem;
+}
+
+#username {
+  margin-left: 10%;
 }
 
 .user-dropdown-btn:hover {
