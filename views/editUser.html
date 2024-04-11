@@ -8,7 +8,36 @@
     <title>Gym Tracker Edit User Profile</title>
     <link rel="stylesheet" href="css/editUser.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-
+    <script>
+        window.onload= function() {
+            document.querySelector("#upload").addEventListener("change", uploadFile, false);
+        }
+        function getCookie(name) {
+            return (name = (document.cookie + ';').match(new RegExp(name + '=.*;'))) && name[0].split(/=|;/)[1];
+        }
+        function uploadFile() {
+            uploadData = this.files[0]
+            console.log(uploadData)
+            var xhr = new XMLHttpRequest();
+                xhr.withCredentials=true;
+                xhr.open("GET", "refresh");
+                xhr.onload = function(event){
+                    var authToken = JSON.parse(event.target.response).accessToken
+                    console.log(authToken)
+                    uploadRequest = new XMLHttpRequest();
+                    uploadRequest.open("POST", "profile/upload")
+                    uploadRequest.setRequestHeader('Authorization', 'Bearer ' + authToken);
+                    uploadRequest.onload = function(event){
+                        console.log("Result: " + event.target.response)
+                        document.querySelector(".ProfileImg").src = document.querySelector(".ProfileImg").src + "?_=" + (new Date()).getTime()
+                    }
+                    const fileData = new FormData();
+                    fileData.append("pfp", uploadData)
+                    uploadRequest.send(fileData);
+                }
+            xhr.send();
+        }
+    </script>
 </head>
 <body>
     <div class="sidenav">
@@ -64,8 +93,8 @@
             <div class="ProfileCard">
                 <div class="cardHeader">Profile Picture </div>
                 <div class="cardBody">
-                    <img class="ProfileImg" src="img/profilepic.png" alt="">
-                    <button class= "uploadBtn" type="button"> Upload new image</button>
+                    <img class="ProfileImg" src="profile/img" alt="">
+                    <input id="upload" class="uploadBtn" type="file"></input>
                 </div>
             </div>
 
