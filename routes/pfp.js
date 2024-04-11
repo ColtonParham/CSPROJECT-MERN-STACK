@@ -8,8 +8,6 @@ const fs = require('fs');
 
 router.get('/:id', (req, res) => {
     profilePath = path.join(__dirname, '..', 'public', 'img', 'pfp', req.params.id + '.png');
-    console.log(profilePath)
-    console.log(fs.existsSync(profilePath))
     if (fs.existsSync(profilePath))
         res.sendFile(profilePath);
     else
