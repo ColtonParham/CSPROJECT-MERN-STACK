@@ -7,14 +7,13 @@ const fileupload = require("express-fileupload");
 const corsOptions = require('./config/corsOptions');
 const { logger } = require('./middleware/logEvents');
 const errorHandler = require('./middleware/errorHandler');
-const verifyJWT = require('./middleware/verifyJWT');
+const verifyJWT = require('./middleware/verifyJWT');        // Checks JWT bearer token. Returns 403 error if token is missing/invalid
 const cookieParser = require('cookie-parser');
 const credentials = require('./middleware/credentials');
 const mongoose = require('mongoose');
 const connectDB = require('./config/dbConn');
 const PORT = process.env.PORT || 3500;
 mongoose.set('strictQuery', false);
-
 
 // Connect to MongoDB
 connectDB();
@@ -52,8 +51,7 @@ app.use('/refresh', require('./routes/refresh'));
 app.use('/logout', require('./routes/logout'));
 app.use('/profile', require('./routes/api/profile'));
 
-app.use(verifyJWT);
-app.use('/users', require('./routes/api/users'));
+app.use('/users', verifyJWT, require('./routes/api/users'));
 
 app.all('*', (req, res) => {
     res.status(404);
