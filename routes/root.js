@@ -31,4 +31,14 @@ router.get('/pwreset(.html)?', (req, res) => {
     console.log("index")
 });
 
+router.get('/liftEntries(.html)?', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'views', 'liftEntries.html'));
+    console.log("index")
+});
+
+router.get('/editUser(.html)?', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'views', 'editUser.html'));
+    console.log("index")
+});
+
 module.exports = router;
