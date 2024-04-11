@@ -16,7 +16,6 @@
         }
         window.onload= function() {
             document.querySelector("#username").textContent=getCookie("UserName");
-            document.querySelector(".user-img").src='/img/profile/' + getCookie("UserID");
             return;
         }
     </script>
@@ -78,7 +77,7 @@
             <div class="user-dropdown">
                 <div class="user-dropdown-btn">
                 <div class = "user">
-                    <img src = "img/default.png" class = "user-img">
+                    <img src = "img/profile" class = "user-img">
                 </div>
                 <span id="username">
                     Username
