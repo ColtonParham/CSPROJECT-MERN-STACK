@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const cors = require('cors');
+const fileupload = require("express-fileupload");
 const corsOptions = require('./config/corsOptions');
 const { logger } = require('./middleware/logEvents');
 const errorHandler = require('./middleware/errorHandler');
@@ -25,6 +26,9 @@ app.use(logger);
 // and fetch cookies credentials requirement
 app.use(credentials);
 
+// File Uploads
+app.use(fileupload());
+
 // Cross Origin Resource Sharing
 app.use(cors(corsOptions));
 
@@ -46,7 +50,7 @@ app.use('/register', require('./routes/register'));
 app.use('/auth', require('./routes/auth'));
 app.use('/refresh', require('./routes/refresh'));
 app.use('/logout', require('./routes/logout'));
-app.use('/img/profile', require('./routes/pfp'));
+app.use('/profile', require('./routes/api/profile'));
 
 app.use(verifyJWT);
 app.use('/users', require('./routes/api/users'));
