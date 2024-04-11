@@ -12,8 +12,8 @@ const uploadPFP = async (req, res) => {
 
     file.mv(uploadPath, function(err) {
         if (err) {
-            res.status(500);
-            error(err);
+            console.log(err);
+            return res.status(500);
         }
         res.send("File Uploaded");
     })
