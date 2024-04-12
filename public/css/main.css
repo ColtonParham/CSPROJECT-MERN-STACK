@@ -161,6 +161,7 @@
   position: relative;
   width: fit-content;
   padding-right: 15px;
+  visibility: hidden;
 }
 
 .user-dropdown-btn{
