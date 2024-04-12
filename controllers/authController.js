@@ -39,8 +39,8 @@ const handleLogin = async (req, res) => {
         res.cookie('jwt', refreshToken, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000 });
 
         // Create cookie with user ID and username
-        res.cookie("UserID", result._id.toString());
-        res.cookie("UserName", user);
+        res.cookie("UserID", result._id.toString(), { maxAge: 24 * 60 * 60 * 1000 });
+        res.cookie("UserName", user, { maxAge: 24 * 60 * 60 * 1000 });
 
         // Send authorization roles and access token to user
         res.json({ roles, accessToken });
