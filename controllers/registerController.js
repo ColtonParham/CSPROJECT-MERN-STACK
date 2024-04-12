@@ -11,7 +11,7 @@ const handleNewUser = async (req, res) => {
     if(format.test(user)) return res.status(400).json({ 'message': 'Username must not contain special characters'});
     if (letter.test(user)) return res.status(400).json({ 'messagae': 'Username must start with a letter'})
     // check for duplicate usernames in the db
-    const duplicate = await User.findOne({ username: user }).exec();
+    const duplicate = await User.findOne({ username: user.toLowerCase() }).exec();
     if (duplicate) return res.sendStatus(409); //Conflict 
 
     try {
@@ -20,13 +20,13 @@ const handleNewUser = async (req, res) => {
 
         //create and store the new user
         const result = await User.create({
-            "username": user,
+            "username": user.toLowerCase(),
             "password": hashedPwd
         });
 
         console.log(result);
 
-        res.status(201).json({ 'success': `New user ${user} created!` });
+        res.status(201).json({ 'success': `New user ${user.toLowerCase()} created!` });
     } catch (err) {
         res.status(500).json({ 'message': err.message });
     }
