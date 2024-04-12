@@ -7,9 +7,9 @@ const handleNewUser = async (req, res) => {
     
     // check for special characters within username
     const format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
-    const letter = /^[A-Za-z]$/
+    const letter = /^[A-Za-z]$/;
     if(format.test(user)) return res.status(400).json({ 'message': 'Username must not contain special characters'});
-    if (!letter.test(user)) return res.status(400).json({ 'messagae': 'Username must start with a letter'})
+    if (!letter.test(user.charAt(0))) return res.status(400).json({ 'messagae': 'Username must start with a letter'})
     // check for duplicate usernames in the db
     const duplicate = await User.findOne({ username: user.toLowerCase() }).exec();
     if (duplicate) return res.sendStatus(409); //Conflict 
