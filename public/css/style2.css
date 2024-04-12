@@ -62,6 +62,7 @@ button {
 button:hover, button:focus {
     transform: translateY(-3px); /* Slight lift effect */
     box-shadow: 0 6px 12px rgb(67, 65, 65);
+    color:#FF8686;
 }
 
 /* Styling for the total volume display */
