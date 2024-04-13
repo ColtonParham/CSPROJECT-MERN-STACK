@@ -1,44 +1,22 @@
 const express = require('express');
 const router = express.Router();
 const path = require('path');
+const fs = require('fs');
+
 
 router.get('^/$|/main(.html)?', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'views', 'main.html'));
 });
 
-router.get('/login(.html)?', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'views', 'login.html'));
-    console.log("index")
-});
+router.get('/:page', (req, res, next) => {
+    console.log(req.params.page);
+    page = req.params.page.slice(-5) == '.html' ?  req.params.page : req.params.page + '.html' // If there's .html in the path leave it, otherwise, add it
+    const format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;        // Regex for if there are any special characters
+    if (format.test(page.slice(0, -5))) return res.sendStatus(400); // Check for bad characters in parameter (prevents path traversal)
+    if (!fs.existsSync(path.join(__dirname, '..', 'views', page)))  // Check if path exists. If no, go to next route
+        return next();
+    return res.sendFile(path.join(__dirname, '..', 'views', page));
+})
 
-router.get('/signUp(.html)?', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'views', 'signUp.html'));
-    console.log("index")
-});
-
-router.get('/function(.html)?', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'views', 'function.html'));
-    console.log("index")
-});
-
-router.get('/maxCalc(.html)?', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'views', 'maxCalc.html'));
-    console.log("index")
-});
-
-router.get('/pwreset(.html)?', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'views', 'pwreset.html'));
-    console.log("index")
-});
-
-router.get('/liftEntries(.html)?', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'views', 'liftEntries.html'));
-    console.log("index")
-});
-
-router.get('/editUser(.html)?', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'views', 'editUser.html'));
-    console.log("index")
-});
 
 module.exports = router;
