@@ -7,23 +7,9 @@ const verifyJWT = require('../../middleware/verifyJWT.js');
 const fs = require('fs');
 const profileController = require('../../controllers/profileController.js');
 
-router.get('/img/', (req, res) => {
-    const cookies = req.cookies;
-    if (!cookies?.jwt) return res.sendStatus(401);
-    profilePath = path.join(__dirname, '..', '..', 'public', 'img', 'pfp', cookies.UserName + '.png');
-    if (fs.existsSync(profilePath))
-        res.sendFile(profilePath);
-    else
-        res.sendFile(path.join(__dirname, '..', '..', 'public', 'img', 'default.png'));
-})
+router.get('/img/', profileController.getImage);
 
-router.get('/img/:id', (req, res) => {
-    profilePath = path.join(__dirname, '..', '..', 'public', 'img', 'pfp', req.params.id + '.png');
-    if (fs.existsSync(profilePath))
-        res.sendFile(profilePath);
-    else
-        res.sendFile(path.join(__dirname, '..', '..', 'public', 'img', 'default.png'));
-});
+router.get('/img/:id', profileController.getImage);
 
 router.post('/upload', verifyJWT, profileController.uploadPFP);
 

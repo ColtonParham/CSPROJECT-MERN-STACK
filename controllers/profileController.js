@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 
 const uploadPFP = async (req, res) => {
     var file = req.files.pfp;
@@ -21,12 +22,15 @@ const uploadPFP = async (req, res) => {
 
 const getImage = async (req, res) => {
     const cookies = req.cookies;
-    if (!cookies?.jwt) return res.sendStatus(401);
-    profilePath = path.join(__dirname, '..', '..', 'public', 'img', 'pfp', cookies.UserName + '.png');
+    if (!req.params?.id) req.params.id = req.cookies.UserName;
+    console.log(req.params.id);
+    const format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+    if (format.test(req.params.id)) return res.status(400).json({ "Message" : "Special characters are not allowed"});
+    profilePath = path.join(__dirname, '..', 'public', 'img', 'pfp', req.params.id + '.png');
     if (fs.existsSync(profilePath))
         res.sendFile(profilePath);
     else
-        res.sendFile(path.join(__dirname, '..', '..', 'public', 'img', 'default.png'));
+        res.sendFile(path.join(__dirname, '..', 'public', 'img', 'default.png'));
 }
 
 module.exports = { uploadPFP, getImage };
