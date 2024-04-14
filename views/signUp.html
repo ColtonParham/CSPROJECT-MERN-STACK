@@ -7,43 +7,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gym Tracker Login</title>
     <link rel="stylesheet" href="css/signUp.css">
+    <script src = "js/api.js"></script>
 </head>
 <body>
     <div class="container">
-        <form target="_blank" action="register" class = "form" method = "POST">
+        <form action="javascript:;" class = "form" onsubmit="submitForm()">
             <h2>Register</h2>
             <p class = "requiredEmail">User *</p>
             <input type="user" name = "user" id="user" class="box" placeholder="Enter Username">
             <p class = "required">Password *</p>
             <input type = "password" name ="pwd" class="box" placeholder="Enter Password">
-            <input type ="" value="Sign Up" id="submit", onclick="submitForm()">
+            <input type ="submit" value="Sign Up" id="submit", >
         </form>
-
         <script>
-            function submitForm() {
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST", "register");
-                xhr.onload = function(event){
-                    switch (xhr.status) {
-                        case 409:
-                            alert("Username taken, please try another username"); // raw response
-                            break;
-                        case 400:
-                            alert("Error: " + event.target.response)
-                            break;
-                        case 201:
-                            alert("Account created, redirecting to login");
-                            window.location.href = "/login";
-                            break;
-                        default:
-                            alert("Unknown error! Status: " + xhr.status + " Response: " + event.target.response);
-                    }  
-                };
-                // or onerror, onabort
-                let form = document.forms[0];
-                var formData = new FormData(form); 
-                console.log(JSON.stringify(Object.fromEntries(formData)))
-                xhr.send(new URLSearchParams(formData));
+            async function submitForm() {
+                try {
+                    data = new FormData(document.forms[0]);
+                    console.log(data);
+                    response = await xmlRequest("POST", "register", data);
+                    alert("Account created, redirecting to login");
+                    window.location.href = "login";
+                } catch (err) {
+                    alert("Error: " + JSON.parse(err.response).message);
+                    console.log(err);
+                }
             }
         </script>
 

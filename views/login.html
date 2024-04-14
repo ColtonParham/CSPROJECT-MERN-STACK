@@ -7,10 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gym Tracker Login</title>
     <link rel="stylesheet" href="css/login.css">
+    <script src = "js/api.js"></script>
 </head>
 <body>
     <div class="container">
-        <form action="javascript:;" class = "form" method = "POST" onsubmit="submitForm()">
+        <form action="javascript:;" class = "form" onsubmit="submitForm()">
             <h2>SIGN IN</h2>
             <input type="user" name = "user" class="box" placeholder="Enter Username">
             <input type = "password" name ="pwd" class="box" placeholder="Enter Password">
@@ -20,28 +21,21 @@
             <p>Don't have an account?<a href ="signUp"> <b>Sign up</b></a></p>
         </form>
         <script>
-            function submitForm() {
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST", "auth");
-                xhr.onload = function(event){
-                    switch (xhr.status) {
+            async function submitForm() {
+                try {
+                    data = new FormData(document.forms[0]);
+                    await xmlRequest("POST", "/auth", data);
+                    window.location.href = "/main";
+                } catch (err) {
+                    console.log(err);
+                    switch (err.status) {
                         case 401:
-                            alert("Incorrect username or password");
-                            break;
-                        case 400:
-                            alert("Error: " + event.target.response)
-                            break;
-                        case 202:
-                            window.location.href = "/main";
+                            alert("Incorrect username or password")
                             break;
                         default:
-                            alert("Unknown error! Status: " + xhr.status + " Response: " + event.target.response);
-                    }  
-                };
-                let form = document.forms[0];
-                var formData = new FormData(form); 
-                console.log(JSON.stringify(Object.fromEntries(formData)))
-                xhr.send(new URLSearchParams(formData));
+                            alert("Error: " + JSON.parse(err.response).message);
+                    }
+                }
             }
         </script>
         <div class="side">
