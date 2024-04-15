@@ -4,7 +4,8 @@ const bcrypt = require('bcrypt');
 const handleNewUser = async (req, res) => {
     const { user, pwd } = req.body;
     if (!user || !pwd) return res.status(400).json({ 'message': 'Username and password are required.' });
-    
+    if (typeof user != "string" || typeof pwd != "string") return res.status(400).json({ 'message': 'Username and password must be strings'}); // Added type validation
+
     // check for special characters within username
     const format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
     const letter = /^[A-Za-z]$/;
