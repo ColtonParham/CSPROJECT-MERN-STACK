@@ -17,8 +17,18 @@
             uploadData = this.files[0]
             const fileData = new FormData();
             fileData.append("pfp", uploadData);
-            await xmlRequest("POST", "profile/upload", fileData, true);
-            document.querySelector(".ProfileImg").src = document.querySelector(".ProfileImg").src + "?_=" + (new Date()).getTime(); // Refresh pfp img
+            try {
+                await xmlRequest("POST", "profile/upload", fileData, true);
+                document.querySelector(".ProfileImg").src = document.querySelector(".ProfileImg").src + "?_=" + (new Date()).getTime(); // Refresh pfp img
+            } catch (err) {
+                switch (err.status) {
+                    case 403:
+                        alert("Authorization error! Please logout and log back in");
+                        break;
+                    default:
+                        alert("Error: " + JSON.parse(err.response).message);
+                }
+            }
         }
     </script>
 </head>
