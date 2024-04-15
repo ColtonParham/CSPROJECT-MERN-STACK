@@ -5,7 +5,7 @@ const path = require('path');
 const uploadPFP = async (req, res) => {
     var file = req.files.pfp;
     allowedTypes = [ "image/jpeg", "image/png", "image/webp"];
-    uploadPath = __dirname + '/../public/img/pfp/' + req.user + '.png';
+    uploadPath = __dirname + '/../public/img/pfp/' + req.userID + '.png';
     
     if (!req?.user) return res.status(500).json({"message": "Error! Non-authed user. No user field found when attempting to upload pfp"})
     if (!req.files) return res.status(400).send("No files were uploaded!");
@@ -23,7 +23,7 @@ const uploadPFP = async (req, res) => {
 
 const getImage = async (req, res) => {
     const cookies = req.cookies;
-    if (!req.params?.id) req.params.id = req.cookies.UserName;
+    if (!req.params?.id) req.params.id = req.cookies.UserID;
     console.log(req.params.id);
     const format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
     if (format.test(req.params.id)) return res.status(400).json({ "Message": "Special characters are not allowed"});

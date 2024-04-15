@@ -8,7 +8,7 @@ async function auth() {
     if (isAuth()) return true;
     console.log("Authenticating")
     try {
-        authToken = JSON.parse(await xmlRequest("GET", "refresh")).accessToken;
+        authToken = JSON.parse(await xmlRequest("GET", "refresh"));
         console.log("Authenticated")
     } catch (err) {
         console.log(err)
@@ -17,14 +17,16 @@ async function auth() {
 
 // Returns if user is currently authenticated
 function isAuth() {
-    return !(authToken == null)
+    if (authToken == null)  return false;
+    if (authToken.exp < Date.now()) return false;
+    return true;
 }
 
 // Returns the authToken
 async function getAuth() {
     if (!isAuth())
         await auth();
-    return authToken;
+    return authToken.accessToken;
 }
 
 // Returns a promise that resolves on a successful xml message, while rejecting when any failure occurs
