@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const cors = require('cors');
+const rateLimit = require("express-rate-limit");
 const fileupload = require("express-fileupload");
 const corsOptions = require('./config/corsOptions');
 const { logger } = require('./middleware/logEvents');
@@ -13,7 +14,10 @@ const credentials = require('./middleware/credentials');
 const mongoose = require('mongoose');
 const connectDB = require('./config/dbConn');
 const PORT = process.env.PORT || 3500;
+const rateLimiter = require("./middleware/limiter");
 mongoose.set('strictQuery', false);
+
+app.disable('x-powered-by'); // Removes information about server to reduce information exposure. Will checkout additional middleware named helmet. May assist in preventing information exposure of middlewear software.
 
 // Connect to MongoDB
 connectDB();
@@ -40,13 +44,15 @@ app.use(express.json());
 //middleware for cookies
 app.use(cookieParser());
 
+app.use(rateLimiter.globalLimiter); // Rate limits unreasonable request amounts
+
 //serve static files
 app.use('/', express.static(path.join(__dirname, '/public')));
 
 // routes
 app.use('/', require('./routes/root'));
 app.use('/register', require('./routes/register'));
-app.use('/auth', require('./routes/auth'));
+app.use('/auth', rateLimiter.loginLimiter, require('./routes/auth'));
 app.use('/refresh', require('./routes/refresh'));
 app.use('/logout', require('./routes/logout'));
 app.use('/profile', require('./routes/api/profile'));
