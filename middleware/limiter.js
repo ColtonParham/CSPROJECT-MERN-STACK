@@ -8,7 +8,7 @@ const globalLimiter = rateLimit({
 
 const loginLimiter = rateLimit({
 	windowMs: 5 * 60 * 1000,	// 5 minute window
-	limit: 5,
+	limit: 10,
 	handler: (req, res) => {
 		res.status(429).json({"message": "Too many login attempts! Please try again in a few minutes"})
 	},
