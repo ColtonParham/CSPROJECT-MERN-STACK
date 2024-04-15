@@ -6,7 +6,7 @@ const { ObjectId } = require('mongoose');
 const handleLogin = async (req, res) => {
     const { user, pwd } = req.body;
     if (!user || !pwd) return res.status(400).json({ 'message': 'Username and password are required.' });
-    if (typeof user != String || typeof pwd != String) return res.status(400).json({ 'message': 'Username and password must be strings'}); // Added type validation
+    if (typeof user != "string" || typeof pwd != "string") return res.status(400).json({ 'message': 'Username and password must be strings'}); // Added type validation
     const foundUser = await User.findOne({ username: user.toLowerCase() }).exec();
     if (!foundUser) return res.sendStatus(401); //Unauthorized 
     // evaluate password 
