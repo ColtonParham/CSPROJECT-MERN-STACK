@@ -6,6 +6,7 @@ const { ObjectId } = require('mongoose');
 const handleLogin = async (req, res) => {
     const { user, pwd } = req.body;
     if (!user || !pwd) return res.status(400).json({ 'message': 'Username and password are required.' });
+    if (typeof user != String || typeof pwd != String) return res.status(400).json({ 'message': 'Username and password must be strings'}); // Added type validation
     const foundUser = await User.findOne({ username: user.toLowerCase() }).exec();
     if (!foundUser) return res.sendStatus(401); //Unauthorized 
     // evaluate password 
@@ -39,8 +40,9 @@ const handleLogin = async (req, res) => {
         UserName = result.username
         UserName = UserName.charAt(0).toUpperCase() + UserName.slice(1); // Capitalizes the first letter for visual effect
         // Create cookie with user ID and username
-        res.cookie("UserID", result._id.toString(), { maxAge: 24 * 60 * 60 * 1000 });
-        res.cookie("UserName", UserName, { maxAge: 24 * 60 * 60 * 1000 });
+        
+        res.cookie("UserID", result._id.toString());
+        res.cookie("UserName", UserName);
 
         // Send authorization roles and access token to user
         res.status(202).json({ roles, accessToken });
