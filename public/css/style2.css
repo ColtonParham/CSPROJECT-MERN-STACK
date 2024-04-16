@@ -12,7 +12,7 @@ body {
 }
 
 h1, h2 {
-    color: #4D3E3E; /* Brighter red for headers*/
+    color: black; /* Brighter red for headers*/
     margin: 20px 0;
     text-transform: uppercase;
     letter-spacing: 1.5px;
