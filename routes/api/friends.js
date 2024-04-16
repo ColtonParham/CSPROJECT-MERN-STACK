@@ -3,7 +3,6 @@
 rateLimiter = require('../../middleware/limiter.js');
 const express = require('express');
 const router = express.Router();
-const verifyJWT = require('../../middleware/verifyJWT.js');
 const friendController = require('../../controllers/friendController.js');
 
 router.get('/get/', friendController.getAllFriends);
