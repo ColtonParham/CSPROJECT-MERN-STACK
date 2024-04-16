@@ -3,9 +3,7 @@
 rateLimiter = require('../../middleware/limiter.js');
 const express = require('express');
 const router = express.Router();
-const path = require('path');
 const verifyJWT = require('../../middleware/verifyJWT.js');
-const fs = require('fs');
 const profileController = require('../../controllers/profileController.js');
 
 router.get('/img/', profileController.getImage);

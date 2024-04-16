@@ -3,12 +3,13 @@ const path = require('path');
 
 // file deepcode ignore NoRateLimitingForExpensiveWebOperation: Vulurn ignored due to rate limiting placed before accessing controller.
 const uploadPFP = async (req, res) => {
+    if (!req?.user) return res.status(500).json({"message": "Error! Non-authenticated user"})
+    if (!req?.files) return res.status(400).json({"message": "No files were uploaded!"});
+    if (!req.files?.pfp) return res.status(400).json({"Message": "File under field pfp was uploaded"});
     var file = req.files.pfp;
     allowedTypes = [ "image/jpeg", "image/png", "image/webp"];
     uploadPath = __dirname + '/../public/img/pfp/' + req.userID + '.png';
     
-    if (!req?.user) return res.status(500).json({"message": "Error! Non-authed user. No user field found when attempting to upload pfp"})
-    if (!req.files) return res.status(400).send("No files were uploaded!");
     console.log(file.mimetype);
     if (!allowedTypes.includes(file.mimetype)) return res.status(400).json({ "Message": "Filetype not supported"});
 
