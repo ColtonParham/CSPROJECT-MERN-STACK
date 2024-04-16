@@ -57,6 +57,7 @@ app.use('/refresh', require('./routes/refresh'));
 app.use('/logout', require('./routes/logout'));
 app.use('/profile', require('./routes/api/profile'));
 
+app.use('/friends', verifyJWT, rateLimiter.friendLimiter, require('./routes/api/friends'));
 app.use('/users', verifyJWT, require('./routes/api/users'));
 
 app.all('*', (req, res) => {

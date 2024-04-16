@@ -31,10 +31,12 @@ async function getAuth() {
 
 // Returns a promise that resolves on a successful xml message, while rejecting when any failure occurs
 // Will get authToken for the user if needed
-async function xmlRequest(method, path, data = null, auth = false) {
+async function xmlRequest(method, path, data = null, auth = false, contentType=null) {
     var xhr = new XMLHttpRequest();
     xhr.withCredentials=true;
     xhr.open(method, path);
+    if (contentType)
+        xhr.setRequestHeader("Content-Type", contentType);
     if (auth)
         xhr.setRequestHeader('Authorization', 'Bearer ' + await getAuth());
     return new Promise((resolve, reject) => {

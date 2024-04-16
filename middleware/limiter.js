@@ -23,8 +23,19 @@ const uploadLimiter = rateLimit({
 	handler: (req, res) => {
 		res.status(429).json({"message": "Too many file uploads! Please try again in a few minutes"})
 	},
-	keyGenerator: (req, res) => req.user,	// User should be authenticated by this point, allowing rate limiting per user
+	keyGenerator: (req, res) => req.userID,	// User should be authenticated by this point, allowing rate limiting per user
 	legacyHeaders: false
 })
 
-module.exports = { globalLimiter, loginLimiter, uploadLimiter }
+const friendLimiter = rateLimit({
+	windowMs: 5 * 60 * 1000,	// 5 minute window
+	limit: 150,
+	handler: (req, res) => {
+		res.status(429).json({"message": "Too many requests! Please try again in a few minutes"})
+	},
+	keyGenerator: (req, res) => req.userID,	// User should be authenticated by this point, allowing rate limiting per user
+	legacyHeaders: false
+})
+
+
+module.exports = { globalLimiter, loginLimiter, uploadLimiter, friendLimiter }
