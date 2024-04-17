@@ -1,3 +1,11 @@
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Rubik", sans-serif;
+    list-style-type: none;
+  }
 /* Reset some default styles */
 body, h1, h2, p, ul, li {
     margin: 0;
@@ -7,19 +15,31 @@ body, h1, h2, p, ul, li {
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
-    
+    margin: 0;
+    padding: 0;
+    min-height: 100vh; /* Set minimum height of the body to 100% of the viewport height */
+    display: flex;
+    flex-direction: column;
 }
 
 header {
     background-color: #4D3E3E;
     color: #fff;
     padding: 20px;
+    font-size: 20px;
 }
 
 header h1 {
     margin: 0;
-}
+    font-size: 45px;
 
+}
+h2{
+    font-size: 30px;
+}
+p{
+    font-size: 20px;
+}
 nav ul {
     list-style: none;
     padding: 0;
@@ -37,6 +57,8 @@ nav ul li a {
 
 main {
     padding: 20px;
+    flex: 1; /* Let main content area grow to fill remaining space */
+    background-color: #FDF4E3;
 }
 
 section {
@@ -44,8 +66,20 @@ section {
 }
 
 footer {
-    background-color: #4D3E3E;
+    background-color:#4D3E3E;
     color: #fff;
-    padding: 10px;
     text-align: center;
+    margin-top: auto; /* Push the footer to the bottom */
+    padding: 20px; /* Example padding */
+}
+.image{
+    
+    max-width: 100%;
+    width: 800px;
+    height: auto;
+    float: right; /* Float the image container to the right */
+    margin-left: 20px; /* Add some margin to the left to create space between text and image */
+}
+section {
+    overflow: hidden; /* Clear floats inside sections */
 }
