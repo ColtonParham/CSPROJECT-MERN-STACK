@@ -64,7 +64,9 @@ app.use('/api/users', verifyJWT, require('./routes/api/users'));
 
 app.all('*', (req, res) => {
     res.status(404);
+    console.log(req.accepts('html'))
     if (req.accepts('html')) {
+        console.log("Sending 404 page")
         res.sendFile(path.join(__dirname, 'views', '404.html'));
     } else if (req.accepts('json')) {
         res.json({ "error": "404 Not Found" });
