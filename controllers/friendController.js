@@ -82,7 +82,7 @@ const sendFriendResponse = async (req, res) => {
     const accept = req.body.accept;
     const request = await FriendRequest.findOne({_id: requestID}).exec();
     if (!request) return res.status(404).json({"Message": "Friend Request not found"});
-    if (!request.friendID==req.userID) return res.sendStatus(401) // Friend request was not sent to the current user: Unauthorized
+    if (!(request.friendID==req.userID)) return res.sendStatus(401) // Friend request was not sent to the current user: Unauthorized
     const userID = request.userID;
     const friendID = request.friendID;
     var result;
