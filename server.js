@@ -55,10 +55,12 @@ app.use('/register', require('./routes/register'));
 app.use('/auth', rateLimiter.loginLimiter, require('./routes/auth'));
 app.use('/refresh', require('./routes/refresh'));
 app.use('/logout', require('./routes/logout'));
-app.use('/profile', require('./routes/api/profile'));
 
-app.use('/friends', verifyJWT, rateLimiter.friendLimiter, require('./routes/api/friends'));
-app.use('/users', verifyJWT, require('./routes/api/users'));
+// API specific
+app.use('/api/profile', require('./routes/api/profile'));
+
+app.use('/api/friends', verifyJWT, rateLimiter.friendLimiter, require('./routes/api/friends'));
+app.use('/api/users', verifyJWT, require('./routes/api/users'));
 
 app.all('*', (req, res) => {
     res.status(404);

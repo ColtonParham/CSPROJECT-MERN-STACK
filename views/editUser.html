@@ -18,7 +18,7 @@
             const fileData = new FormData();
             fileData.append("pfp", uploadData);
             try {
-                await xmlRequest("POST", "profile/upload", fileData, true);
+                await xmlRequest("POST", "api/profile/upload", fileData, true);
                 document.querySelector(".ProfileImg").src = document.querySelector(".ProfileImg").src + "?_=" + (new Date()).getTime(); // Refresh pfp img
             } catch (err) {
                 switch (err.status) {
@@ -86,7 +86,7 @@
             <div class="ProfileCard">
                 <div class="cardHeader">Profile Picture </div>
                 <div class="cardBody">
-                    <img class="ProfileImg" src="profile/img" alt="">
+                    <img class="ProfileImg" src="api/profile/img" alt="">
                     <input id="upload" class="uploadBtn" type="file"></input>
                 </div>
             </div>
