@@ -50,13 +50,15 @@ const sendFriendRequest = async (req, res) => {
     }
     if (typeof req.body.friendUser != "string") return res.status(400).json({ 'message': 'Username must be a string'}); // Added type validation
     const friend = await User.findOne({username: req.body.friendUser.toLowerCase()}).exec();
-    
     if (!friend)
         return res.stauts(204).json({"Message": "User not found"});
-
-    const dupe = await FriendRequest.findOne({friendID: req.body.friendID, userID: req.userID}).exec()
+    console.log("Friend ID: " + friend._id);
+    console.log("User ID: " + req.userID);
+    const dupe = await FriendRequest.findOne({friendID: friend._id, userID: req.userID}).exec()
     if (dupe){
+        console.log("Duplicate Friend request!")
         console.log(dupe)
+        console.log("End of dupe")
         return res.status(409).json({"Message": "Friend request already sent"});
     }
     try {
