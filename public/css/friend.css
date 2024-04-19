@@ -1,0 +1,145 @@
+/* Reset and Base Styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+header {
+    background: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    font-size: 24px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 14px;
+}
+
+/* Navigation Styles */
+nav ul {
+    list-style-type: none;
+    background-color: #323232;
+    text-align: center;
+    padding: 10px;
+    margin: 0;
+}
+
+nav ul li {
+    display: inline;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: white;
+    padding: 15px 20px;
+    display: inline-block;
+}
+
+nav ul li a:hover, nav ul li a.active {
+    background-color: #555;
+    transition: background-color 0.3s;
+}
+
+/* Main Layout */
+main {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Friends List Styles */
+.friend-list {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.friend-list h2 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.friend-list ul {
+    list-style-type: none;
+}
+
+.friend-list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.friend-list img {
+    flex: 0 0 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.friend-list span {
+    font-weight: bold;
+    flex: 1;
+}
+
+.friend-list button {
+    padding: 8px 16px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.friend-list button:hover {
+    background-color: #45a049;
+}
+
+/* Activity Feed Styles */
+.activity-feed {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.activity-feed h2 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.activity-feed ul {
+    list-style-type: none;
+}
+
+.activity-feed li {
+    margin-bottom: 10px;
+    padding: 10px;
+    background: #f0f2f5;
+    border-left: 5px solid #4CAF50;
+    transition: border-left 0.3s;
+}
+
+.activity-feed li:hover {
+    border-left: 5px solid #45a049;
+}
+
+

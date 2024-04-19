@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friends Activity - Gym Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/friend.css">
+    <script src="js/api.js"></script>
+    <script>
+        window.onload = async function() {
+            friendsUl = document.querySelector("body > main > section.friend-list > ul")
+            friends = await getFriends();
+            console.log(friends)
+            if (friends.length==0) {
+                return friendsUl.append(document.createTextNode("You don't have anyone friended yet"));
+            } else {
+            friends.forEach((friend) => {
+                const elem = document.createElement("li");
+                const img = document.createElement("img");
+                const btn = document.createElement("button");
+                const span = document.createElement("span");
+                img.src = "api/profile/img/" + friend.userID;
+                span.textContent = friend.user;
+                btn.textContent = "View Profile"
+                elem.append(img, span, btn);
+                return friendsUl.appendChild(elem);
+                console.log(elem)
+                console.log(friend)
+            });
+            return;
+        }
+        };
+        async function getFriends() {
+            return JSON.parse(await xmlRequest("GET", '/api/friends/get',null,true))
+        }
+        async function addFriend(username) {
+            return await xmlRequest("POST", "/api/friends/request/send", JSON.stringify({"friendUser": username}), true, "application/json")
+        }
+        async function sendFriendResponse(requestID) {
+            return await xmlRequest("POST", "/api/friends/request/respond", JSON.stringify({"requestID": requestID, "accept": true}), true, "application/json")
+        }
+        async function getIncommingRequests() {
+            return JSON.parse(await xmlRequest("GET", "/api/friends/request/received", "", true))
+        }
+        async function getOutgoingRequests() {
+            return JSON.parse(await xmlRequest("GET", "/api/friends/request/sent", "", true))
+        }
+        async function removeFriend() {
+            await xmlRequest("POST", "/api/friends/remove", JSON.stringify({"friendID": "6619b6b46f143cd723c53035"}), true, "application/json")
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Friends Activity</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="dashboard">Dashboard</a></li>
+            <li><a href="friends" class="active">Friends</a></li>
+            <li><a href="challenges">Challenges</a></li>
+            <li><a href="settings">Settings</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section class="friend-list">
+            <h2>Your Friends</h2>
+            <script></script>
+            <ul>
+            </ul>
+        </section>
+
+        <section class="activity-feed">
+            <h2>Recent Activities</h2>
+            <ul>
+                <li>John Doe just set a new squat PR of 300 lbs!</li>
+                <li>Jane Smith completed a 5k run in 20 minutes!</li>
+                <!-- More activities can be listed here -->
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2024 Gym Tracker. All rights reserved.</p>
+    </footer>
+</body>
+</html>
