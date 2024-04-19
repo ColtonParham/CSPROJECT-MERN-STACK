@@ -9,8 +9,16 @@
     <script src="js/api.js"></script>
     <script>
         window.onload = async function() {
-            friendsUl = document.querySelector("body > main > section.friend-list > ul")
+            updateFriendsList()
+        };
+
+        async function updateFriendsList() {
+            friendsUl = document.querySelector("body > main > section.friend-list > ul");
+            friendsUl.textContent = '';         // Removes all children and replaces it with an empty string;
             friends = await getFriends();
+            friends.sort(function(a,b) {
+                return a.user>b.user ? 1:-1;
+            });
             console.log(friends)
             if (friends.length==0) {
                 return friendsUl.append(document.createTextNode("You don't have anyone friended yet"));
@@ -30,15 +38,15 @@
             });
             return;
         }
-        };
+        }
         async function getFriends() {
             return JSON.parse(await xmlRequest("GET", '/api/friends/get',null,true))
         }
         async function addFriend(username) {
             return await xmlRequest("POST", "/api/friends/request/send", JSON.stringify({"friendUser": username}), true, "application/json")
         }
-        async function sendFriendResponse(requestID) {
-            return await xmlRequest("POST", "/api/friends/request/respond", JSON.stringify({"requestID": requestID, "accept": true}), true, "application/json")
+        async function sendFriendResponse(requestID, accept) {
+            return await xmlRequest("POST", "/api/friends/request/respond", JSON.stringify({"requestID": requestID, "accept": accept}), true, "application/json")
         }
         async function getIncommingRequests() {
             return JSON.parse(await xmlRequest("GET", "/api/friends/request/received", "", true))
