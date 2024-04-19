@@ -161,6 +161,13 @@
     margin: 4px 0;
     font-size: 1.2rem;
 }
+.close-button {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: #FF8686;  
 
 .main-content{
   position: relative;
@@ -175,7 +182,7 @@
 .main-content h1{
   padding-bottom: 30px;
 }
-.container1      /*header*/
+.container1      
 {
   display: flex;
   justify-content: space-between;
