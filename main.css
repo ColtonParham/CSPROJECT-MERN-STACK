@@ -225,6 +225,7 @@
   /*
   background-color:var(--light)*/
 }
+
 .box{
   background-color: #CCCCCC;
   padding: 15px;
@@ -286,3 +287,42 @@
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
 }
+
+.box {
+  background-color: #CCCCCC;
+  padding: 15px;
+  border-radius: 20px;
+  color: black; /* Ensuring text is readable against the light background */
+}
+
+.boxHeader {
+  background-color: var(--dark);
+  color: white;
+  text-align: center;
+  padding: 10px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  font-size: 1.5rem;
+}
+
+.activity-feed h3 {
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: var(--dark);
+}
+
+.activity-feed ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.activity-feed li {
+  padding: 10px;
+  border-bottom: 1px solid #eee; /* Adds a subtle separator */
+}
+
+.activity-feed li:last-child {
+  border-bottom: none;
+}
+
+
