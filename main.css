@@ -354,5 +354,30 @@
   grid-area: box; /* Adjust if the box should span more or less */
 }
 
+.BodyContainer {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
+  grid-template-rows: repeat(2, auto); /* Explicit definition for two rows */
+  gap: 15px;
+  grid-template-areas:
+      "button1 button2 chart chart"
+      "progress progress box box"; /* New 'progress' area spans two columns */
+}
+
+.progress-container {
+  grid-area: progress; /* Assigning the new container to the grid area */
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #fff; /* Ensures readability */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column; /* Aligns items vertically */
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* Existing .chart-container and .box styles remain unchanged */
+
+
 
 
