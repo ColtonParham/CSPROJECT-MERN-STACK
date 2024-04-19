@@ -23,6 +23,16 @@ document.addEventListener("DOMContentLoaded", function() {
         const notificationBar = document.createElement("div");
         notificationBar.className = "notification-bar";
 
+        const closeButton = document.createElement("span");
+        closeButton.textContent = "X";
+        closeButton.className = "close-button";
+        closeButton.onclick = function() {
+            notificationBar.style.opacity = "0";
+            setTimeout(() => {
+                notificationBar.remove();
+            }, 500); // Waits 500ms to completely remove from DOM
+        };
+
         const heading = document.createElement("h4");
         heading.textContent = "Notifications from GymTracker:";
         heading.className = "notification-heading";
@@ -35,6 +45,7 @@ document.addEventListener("DOMContentLoaded", function() {
         motivationalMessage.textContent = "Motivation: " + getRandomItem(messages);
         motivationalMessage.className = "notification-message";
 
+        notificationBar.appendChild(closeButton);
         notificationBar.appendChild(heading);
         notificationBar.appendChild(workoutMessage);
         notificationBar.appendChild(motivationalMessage);
