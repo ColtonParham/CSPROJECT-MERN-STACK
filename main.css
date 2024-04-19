@@ -137,6 +137,30 @@
 .sidenav.active ul li .tooltip{
   display: none;
 }
+.notification-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--dark);
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 1.2rem;
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.3);
+    z-index: 1000;
+}
+
+.notification-heading {
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.notification-message {
+    margin: 4px 0;
+    font-size: 1.2rem;
+}
 
 .main-content{
   position: relative;
