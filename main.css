@@ -326,3 +326,33 @@
 }
 
 
+/* Update for the grid container that contains the chart and other elements */
+.BodyContainer {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Ensures the container has four columns */
+  grid-template-rows: auto auto; /* Two rows that adjust based on content */
+  gap: 15px; /* Spacing between grid items */
+  grid-template-areas:
+      "button1 button1 button2 button2" /* First row spans two columns each for buttons */
+      "chart chart box box"; /* Second row with chart taking up the first half */
+}
+
+/* Specific area assignment for the chart container */
+.chart-container {
+  grid-area: chart; /* Assigns the chart to the specified grid area */
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  background-color: #fff; /* Enhances visibility */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Ensure the box occupies the second half of the second row effectively */
+.box {
+  grid-area: box; /* Adjust if the box should span more or less */
+}
+
+
+
