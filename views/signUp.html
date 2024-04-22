@@ -28,8 +28,14 @@
                     alert("Account created, redirecting to login");
                     window.location.href = "login";
                 } catch (err) {
-                    alert("Error: " + JSON.parse(err.response).message);
                     console.log(err);
+                    switch (err.status) {
+                        case 409:
+                            alert("Error: username already taken");
+                            break;
+                        default:
+                            alert("Error: " + JSON.parse(err.response).message);
+                    }
                 }
             }
         </script>
