@@ -2,9 +2,15 @@ const { ObjectId } = require('mongodb');
 const Friend = require('../model/Friend');
 const FriendRequest = require('../model/FriendRequest');
 const User = require('../model/User');
+const val = require('validator');
 
 const getAllFriends = async (req, res) => {
-    if (!req.body?.limit) req.body.limit = 50;
+    if (!req.userID) return res.status(500).json({"Message": "Non-authenticated user when authentication is expected"});
+    if (!req.body?.limit) 
+        req.body.limit = 50;
+    else
+        if (!val.isInt(req.body.limit, {gt: 0})) return res.status(400).json({"Message": "limit value has to be an integer greater than 0"});
+
     const friends = await Friend.find({userIDs: req.userID}, {userID: 0}, {limit: req.body.limit}).exec();
     const friendList = [];
     for await (const friend of friends) {
@@ -22,33 +28,51 @@ const getAllFriends = async (req, res) => {
 }
 
 const removeFriend = async (req, res) => {
-    if (!req.body?.friendID) return res.status(400).json({"Message": "Must include the userID of the friend you wish to remove"});
-    if (!req.userID) return res.status(401);
+    if (!req.userID) return res.status(500).json({"Message": "Non-authenticated user when authentication is expected"});
+    if (!req.body?.friendID) return res.status(400).json({"Message": "Must include the userID of the friend you wish to remove (friendID)"});
+    if (!val.isMongoId(req.body.friendID)) return res.status(400).json({"Message": "Invalid friendID"});
     const result = await Friend.deleteOne({userIDs: {$all: [req.userID, req.body.friendID]}})
-    console.log(result);
-    return res.status(201).send(result);
+    if (result.acknowledged)
+        return res.status(201).json({"Message": "Successfully removed friend"});
+    else
+        return res.status(400).json({"Message": "Invalid friendID"});
+}
+
+const cancelFriendRequest = async (req, res) => {
+    if (!req.userID) return res.status(500).json({"Message": "Non-authenticated user when authentication is expected"});
+    if (!req.body?.requestID) return res.status(400).json({"Message": "Must include requestID to remove"})
+    
+    const result = await Friend.deleteOne({userIDs: {$all: [req.userID, req.body.friendID]}})
 }
 
 const getSentRequests = async (req, res) => {
-    if (!req.body?.limit) req.body.limit = 50;
+    if (!req.userID) return res.status(500).json({"Message": "Non-authenticated user when authentication is expected"});
+    if (!req.body?.limit) 
+        req.body.limit = 50;
+    else
+        if (!val.isInt(req.body.limit, {gt: 0})) return res.status(400).json({"Message": "limit value has to be an integer greater than 0"});
     const requests = await FriendRequest.find({userID: req.userID}, {userID: 0}, {limit: req.body.limit}).exec();
     if (!requests) return res.status(204).json({"Message": "No pending requests found"});
     return res.status(201).send(requests);
 }
 
 const getPendingRequests = async (req, res) => {
-    if (!req.body?.limit) req.body.limit = 50;
+    if (!req.userID) return res.status(500).json({"Message": "Non-authenticated user when authentication is expected"});
+    if (!req.body?.limit) 
+        req.body.limit = 50;
+    else
+        if (!val.isInt(req.body.limit, {gt: 0})) return res.status(400).json({"Message": "limit value has to be an integer greater than 0"});
     const requests = await FriendRequest.find({friendID: req.userID}, {friendID: 0}, {limit: req.body.limit}).exec();
     if (!requests) return res.status(204).json({"Message": "No pending requests found"});
     return res.status(201).send(requests);
 }
 
 const sendFriendRequest = async (req, res) => {
-    if (!req.body?.friendUser) {
-        console.log(req.body)
-        return res.status(400).json({"Message": "Request must include friend's username (friendUser field missing)"})
-    }
+    if (!req.userID) return res.status(500).json({"Message": "Non-authenticated user when authentication is expected"});
+    if (!req.body?.friendUser) return res.status(400).json({"Message": "Request must include friend's username (friendUser field missing)"});
     if (typeof req.body.friendUser != "string") return res.status(400).json({ 'message': 'Username must be a string'}); // Added type validation
+    if (!val.isAlphanumeric(req.body.friendUser)) return res.status(400).json({"Message": "friendUser must be a valid username"});
+
     const friend = await User.findOne({username: req.body.friendUser.toLowerCase()}).exec();
     if (!friend)
         return res.stauts(204).json({"Message": "User not found"});
@@ -75,16 +99,17 @@ const sendFriendRequest = async (req, res) => {
 }
 
 const sendFriendResponse = async (req, res) => {
-    if (!req.body?.requestID) return res.status(400).json({"Message": "Request must include the friend Request's ID (requestID field missing)"})
-    if (req.body?.accept==undefined) {
-        console.log(req.body.accept)
-        return res.status(400).json({"Message": "Request must specify whether or not to accept the friend request (accept field missing)"})
-    }
+    if (!req.userID) return res.status(500).json({"Message": "Non-authenticated user when authentication is expected"});
+    if (!req.body?.requestID) return res.status(400).json({"Message": "Request must include the friend Request's ID (requestID field missing)"});
+    if (!val.isMongoId(req.body.requestID)) return res.status(400).json({"Message": "Invalid requestID field"});
+    if (req.body?.accept==undefined) return res.status(400).json({"Message": "Request must specify whether or not to accept the friend request (accept field missing)"});
+
     const requestID = ObjectId.createFromHexString(req.body.requestID);
     const accept = req.body.accept;
     const request = await FriendRequest.findOne({_id: requestID}).exec();
+
     if (!request) return res.status(404).json({"Message": "Friend Request not found"});
-    if (!(request.friendID==req.userID)) return res.sendStatus(401) // Friend request was not sent to the current user: Unauthorized
+    if (!(request.friendID==req.userID)) return res.sendStatus(401) // Friend request was not sent to the current user: Unauthenticated
     const userID = request.userID;
     const friendID = request.friendID;
     var result;
@@ -94,17 +119,17 @@ const sendFriendResponse = async (req, res) => {
                 userIDs: [userID, friendID]
             });
             console.log("Friend created: ")
-            console.log(result);
+            result = {"Message": "Friend request accepted"}
         } catch (err) {
-            return res.status(500).json({ 'message': err.message });
+            console.log(err);
+            return res.sendStatus(500);
         }
     } else {
-        result = {"Message": "Success"}
+        result = {"Message": "Friend request declined"}
     }
     request.deleteOne({_id: req.body.requestID});   // Delete friend request
 
     return res.status(201).send(result);
 }
 
-
-module.exports = { getAllFriends, getSentRequests, getPendingRequests, sendFriendRequest, sendFriendResponse, removeFriend }
+module.exports = { getAllFriends, getSentRequests, getPendingRequests, sendFriendRequest, sendFriendResponse, removeFriend, cancelFriendRequest }
