@@ -5,59 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Friends Activity - Gym Tracker</title>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/friend.css">
-    <script src="js/api.js"></script>
-    <script>
-        window.onload = async function() {
-            updateFriendsList()
-        };
-
-        async function updateFriendsList() {
-            friendsUl = document.querySelector("body > main > section.friend-list > ul");
-            friendsUl.textContent = '';         // Removes all children and replaces it with an empty string;
-            friends = await getFriends();
-            friends.sort(function(a,b) {
-                return a.user>b.user ? 1:-1;
-            });
-            console.log(friends)
-            if (friends.length==0) {
-                return friendsUl.append(document.createTextNode("You don't have anyone friended yet"));
-            } else {
-            friends.forEach((friend) => {
-                const elem = document.createElement("li");
-                const img = document.createElement("img");
-                const btn = document.createElement("button");
-                const span = document.createElement("span");
-                img.src = "api/profile/img/" + friend.userID;
-                span.textContent = friend.user;
-                btn.textContent = "View Profile"
-                elem.append(img, span, btn);
-                return friendsUl.appendChild(elem);
-                console.log(elem)
-                console.log(friend)
-            });
-            return;
-        }
-        }
-        async function getFriends() {
-            return JSON.parse(await xmlRequest("GET", '/api/friends/get',null,true))
-        }
-        async function addFriend(username) {
-            return await xmlRequest("POST", "/api/friends/request/send", JSON.stringify({"friendUser": username}), true, "application/json")
-        }
-        async function sendFriendResponse(requestID, accept) {
-            return await xmlRequest("POST", "/api/friends/request/respond", JSON.stringify({"requestID": requestID, "accept": accept}), true, "application/json")
-        }
-        async function getIncommingRequests() {
-            return JSON.parse(await xmlRequest("GET", "/api/friends/request/received", "", true))
-        }
-        async function getOutgoingRequests() {
-            return JSON.parse(await xmlRequest("GET", "/api/friends/request/sent", "", true))
-        }
-        async function removeFriend() {
-            await xmlRequest("POST", "/api/friends/remove", JSON.stringify({"friendID": "6619b6b46f143cd723c53035"}), true, "application/json")
-        }
-    </script>
+    <link rel="stylesheet" href="/public/css/friend.css">
 </head>
 <body>
     <header>
@@ -66,18 +14,48 @@
 
     <nav>
         <ul>
-            <li><a href="main">Dashboard</a></li>
-            <li><a href="friends" class="active">Friends</a></li>
-            <li><a href="challenges">Challenges</a></li>
-            <li><a href="settings">Settings</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="friends.html" class="active">Friends</a></li>
+            <li><a href="challenges.html">Challenges</a></li>
+            <li><a href="settings.html">Settings</a></li>
         </ul>
     </nav>
 
     <main>
+
+        <section class="friend-requests">
+            <h2>Incoming Friend Requests</h2>
+            <ul id="friendRequestsList">
+                <!-- Example of an incoming friend request -->
+                <li id="request-Alice">
+                    <span>Alice Cooper</span>
+                    <button class="accept">Accept</button>
+                    <button class="deny">Deny</button>
+                </li>
+            </ul>
+        </section>
+
+        <section class="send-request">
+            <h2>Send a Friend Request</h2>
+            <form id="sendRequestForm">
+                <input type="text" id="friendUsername" placeholder="Enter friend's username" required>
+                <button type="submit">Send Request</button>
+            </form>
+            
+        </section>
+
         <section class="friend-list">
             <h2>Your Friends</h2>
-            <script></script>
-            <ul>
+            <ul id="friendsList">
+                <li>
+                    <img src="profile1.jpg" alt="John Doe">
+                    <span>John Doe</span>
+                    <button class="remove">Remove Friend</button>
+                </li>
+                <li>
+                    <span>Requested: Emily Blunt</span>
+                    <button class="cancel">Cancel Request</button>
+                </li>
             </ul>
         </section>
 
@@ -86,7 +64,6 @@
             <ul>
                 <li>John Doe just set a new squat PR of 300 lbs!</li>
                 <li>Jane Smith completed a 5k run in 20 minutes!</li>
-                <!-- More activities can be listed here -->
             </ul>
         </section>
     </main>
@@ -94,5 +71,66 @@
     <footer>
         <p>© 2024 Gym Tracker. All rights reserved.</p>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const acceptButtons = document.querySelectorAll('.accept');
+            const friendsList = document.getElementById('friendsList');
+            const sendRequestForm = document.getElementById('sendRequestForm');
+            const friendUsernameInput = document.getElementById('friendUsername');
+        
+            // Handling accepting friend requests
+            acceptButtons.forEach(button => {
+                button.addEventListener('click', function(event) {
+                    const listItem = event.target.parentNode;
+                    const friendName = listItem.querySelector('span').textContent;
+        
+                    // Remove the request from the friend requests section
+                    listItem.remove();
+        
+                    // Create a new list item for the accepted friend
+                    const newFriendItem = document.createElement('li');
+                    newFriendItem.innerHTML = `
+                        <img src="profile.jpg" alt="${friendName}">
+                        <span>${friendName}</span>
+                        <button class="remove">Remove Friend</button>
+                    `;
+        
+                    // Append the new friend to the friends list
+                    friendsList.appendChild(newFriendItem);
+                });
+            });
+        
+            // Handling sending friend requests
+            sendRequestForm.addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent the form from submitting normally
+        
+                const username = friendUsernameInput.value;
+        
+                // Example: Sending the friend request to the server
+                fetch('/api/send-friend-request', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username: username })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Request sent:', data);
+                    // Optionally update the UI to reflect the request
+                    const newSentRequestItem = document.createElement('li');
+                    newSentRequestItem.textContent = `Requested: ${username}`;
+                    document.getElementById('sentRequestsList').appendChild(newSentRequestItem);
+                    friendUsernameInput.value = ''; // Clear the input field
+                })
+                .catch(error => {
+                    console.error('Error sending request:', error);
+                });
+            });
+        });
+        </script>
+        
 </body>
 </html>
+
