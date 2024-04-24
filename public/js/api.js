@@ -11,7 +11,19 @@ async function auth() {
         authToken = JSON.parse(await xmlRequest("GET", "refresh"));
         console.log("Authenticated")
     } catch (err) {
-        console.log(err)
+        console.log("Failed authentication");
+        console.log(err);
+        switch (err.status) {
+            case 403:
+                alert("Token no longer valid. Please logout and log back in");
+                break;
+            case 401:
+                alert("Invalid or missing refresh token. Please logout and log back in")
+                break
+            default:
+                alert("Unknown authentication error. Issue may be resolved by logging out and back in again.");
+                console.log(err.response);
+        }
     }
 }
 
