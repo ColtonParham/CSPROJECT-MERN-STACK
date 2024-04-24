@@ -22,20 +22,40 @@
     </nav>
 
     <main>
+
+        <section class="friend-requests">
+            <h2>Incoming Friend Requests</h2>
+            <ul id="friendRequestsList">
+                <!-- Example of an incoming friend request -->
+                <li id="request-Alice">
+                    <span>Alice Cooper</span>
+                    <button class="accept">Accept</button>
+                    <button class="deny">Deny</button>
+                </li>
+            </ul>
+        </section>
+
+        <section class="send-request">
+            <h2>Send a Friend Request</h2>
+            <form id="sendRequestForm">
+                <input type="text" id="friendUsername" placeholder="Enter friend's username" required>
+                <button type="submit">Send Request</button>
+            </form>
+            
+        </section>
+
         <section class="friend-list">
             <h2>Your Friends</h2>
-            <ul>
+            <ul id="friendsList">
                 <li>
                     <img src="profile1.jpg" alt="John Doe">
                     <span>John Doe</span>
-                    <button>View Profile</button>
+                    <button class="remove">Remove Friend</button>
                 </li>
                 <li>
-                    <img src="profile2.jpg" alt="Jane Smith">
-                    <span>Jane Smith</span>
-                    <button>View Profile</button>
+                    <span>Requested: Emily Blunt</span>
+                    <button class="cancel">Cancel Request</button>
                 </li>
-                <!-- More friends can be added similarly -->
             </ul>
         </section>
 
@@ -44,7 +64,6 @@
             <ul>
                 <li>John Doe just set a new squat PR of 300 lbs!</li>
                 <li>Jane Smith completed a 5k run in 20 minutes!</li>
-                <!-- More activities can be listed here -->
             </ul>
         </section>
     </main>
@@ -52,5 +71,67 @@
     <footer>
         <p>© 2024 Gym Tracker. All rights reserved.</p>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const acceptButtons = document.querySelectorAll('.accept');
+            const friendsList = document.getElementById('friendsList');
+            const sendRequestForm = document.getElementById('sendRequestForm');
+            const friendUsernameInput = document.getElementById('friendUsername');
+        
+            // Handling accepting friend requests
+            acceptButtons.forEach(button => {
+                button.addEventListener('click', function(event) {
+                    const listItem = event.target.parentNode;
+                    const friendName = listItem.querySelector('span').textContent;
+        
+                    // Remove the request from the friend requests section
+                    listItem.remove();
+        
+                    // Create a new list item for the accepted friend
+                    const newFriendItem = document.createElement('li');
+                    newFriendItem.innerHTML = `
+                        <img src="profile.jpg" alt="${friendName}">
+                        <span>${friendName}</span>
+                        <button class="remove">Remove Friend</button>
+                    `;
+        
+                    // Append the new friend to the friends list
+                    friendsList.appendChild(newFriendItem);
+                });
+            });
+        
+            // Handling sending friend requests
+            sendRequestForm.addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent the form from submitting normally
+        
+                const username = friendUsernameInput.value;
+        
+                // Example: Sending the friend request to the server
+                fetch('/api/send-friend-request', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username: username })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Request sent:', data);
+                    // Optionally update the UI to reflect the request
+                    const newSentRequestItem = document.createElement('li');
+                    newSentRequestItem.textContent = `Requested: ${username}`;
+                    document.getElementById('sentRequestsList').appendChild(newSentRequestItem);
+                    friendUsernameInput.value = ''; // Clear the input field
+                })
+                .catch(error => {
+                    console.error('Error sending request:', error);
+                });
+            });
+        });
+        </script>
+        
 </body>
 </html>
+
+
