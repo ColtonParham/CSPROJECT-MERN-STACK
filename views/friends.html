@@ -5,7 +5,137 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Friends Activity - Gym Tracker</title>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/public/css/friend.css">
+    <link rel="stylesheet" href="/css/friend.css">
+	<script src="/js/api.js"></script>
+	<script>
+        window.onload = async function() {
+            updateFriendsList();
+            updateRequestsList();
+        };
+
+        async function updateFriendsList() {
+            friendsUl = document.querySelector("body > main > section.friend-list > ul");
+            friendsUl.textContent = '';         // Removes all children and replaces it with an empty string;
+            friends = await getFriends();
+            friends.sort(function(a,b) {
+                return a.user>b.user ? 1:-1;
+            });
+            console.log(friends)
+            if (friends.length==0) {
+                return friendsUl.append(document.createTextNode("You don't have anyone friended yet"));
+            } else {
+                friends.forEach((friend) => {
+                    const elem = document.createElement("li");
+                    const img = document.createElement("img");
+                    const btn = document.createElement("button");
+                    const span = document.createElement("span");
+                    img.src = "api/profile/img/" + friend.userID;
+                    span.textContent = friend.user;
+                    btn.textContent = "Remove Friend"
+                    btn.onclick = async function(){console.log('Removing Friend with userID: ' + friend.userID);await removeFriend(friend.userID); updateFriendsList()};
+                    elem.append(img, span, btn);
+                    return friendsUl.appendChild(elem);
+                    console.log(elem)
+                    console.log(friend)
+                });
+                return;
+            }
+        }
+
+        async function updateRequestsList() {
+            requestsOutUl = document.querySelector("#requestslistOut")
+            requestsInUl = document.querySelector("#requestslistIn")
+            requestsOutUl.textContent = '';         // Removes all children and replaces it with an empty string;
+            requestsInUl.textContent = '';         // Removes all children and replaces it with an empty string;
+            requestsIn = await getIncommingRequests()
+            requestsOut = await getOutgoingRequests();
+            requestsIn.sort(function(a,b) {
+                return a.user>b.user ? 1:-1;
+            });
+            requestsOut.sort(function(a,b) {
+                return a.user>b.user ? 1:-1;
+            });
+            console.log(requestsIn);
+            console.log(requestsOut);
+                requestsOut.forEach((request) => {
+                    const elem = document.createElement("li");
+                    const img = document.createElement("img");
+                    const btn = document.createElement("button");
+                    const span = document.createElement("span");
+                    img.src = "api/profile/img/" + request.userID;
+                    span.textContent = request.user;
+                    btn.textContent = "Cancel request"
+                    btn.onclick = async function(){console.log('Canceling FR with userID: ' + request.userID);await cancelOutgoingRequest(request.userID); updateRequestsList()};
+                    elem.append(img, span, btn);
+                    return requestsOutUl.appendChild(elem);
+                });
+                requestsIn.forEach((request) => {
+                    const elem = document.createElement("li");
+                    const img = document.createElement("img");
+                    const btn1 = document.createElement("button");
+                    const btn2 = document.createElement("button");
+                    const span = document.createElement("span");
+                    img.src = "api/profile/img/" + request.userID;
+                    console.log(request)
+                    span.textContent = request.user;
+                    btn1.textContent = "Accept";
+                    btn1.onclick = async function(){await sendFriendResponse(request.requestID, true); updateFriendsList(); updateRequestsList()};
+                    btn2.textContent = "Deny";
+                    btn2.onclick = async function(){await sendFriendResponse(request.requestID, false); updateRequestsList()};
+                    elem.append(img, span, btn1, btn2);
+                    return requestsInUl.appendChild(elem);
+                });
+                return;
+            
+        }
+        async function submitRequeset() {
+            username = (new FormData(document.forms[0])).get('friendUser');
+            console.log("Sending friend request to user " + username);
+            try {
+                result = await addFriend(username);
+                if (result.length==0) {
+                    alert("User not found")
+                    console.log(result)
+                    return
+                }
+                console.log(result);
+                result = JSON.parse(result);
+                if (result?.success)
+                    alert(result.success)
+                updateRequestsList()
+            } catch (err) {
+                console.log(err);
+                alert(JSON.parse(err.response).Message)
+                return
+            }
+        }
+        async function getFriends() {
+            return JSON.parse(await xmlRequest("GET", '/api/friends/get',null,true))
+        }
+        async function addFriend(username) {
+            console.log("before")
+            var t=await xmlRequest("POST", "/api/friends/request/send", JSON.stringify({"friendUser": username}), true, "application/json");
+            console.log("aftere")
+            return t
+        }
+        async function sendFriendResponse(requestID, accept) {
+            console.log(requestID);
+            console.log(accept)
+            return await xmlRequest("POST", "/api/friends/request/respond", JSON.stringify({"requestID": requestID, "accept": accept}), true, "application/json");
+        }
+        async function getIncommingRequests() {
+            return JSON.parse(await xmlRequest("GET", "/api/friends/request/received", "", true));
+        }
+        async function getOutgoingRequests() {
+            return JSON.parse(await xmlRequest("GET", "/api/friends/request/sent", "", true));
+        }
+        async function cancelOutgoingRequest(friendID) {
+            return JSON.parse(await xmlRequest("POST", "/api/friends/request/cancel", JSON.stringify({"friendID": friendID}), true, "application/json"));
+        }
+        async function removeFriend(friendID) {
+            await xmlRequest("POST", "/api/friends/remove", JSON.stringify({"friendID": friendID}), true, "application/json");
+        }
+    </script>
 </head>
 <body>
     <header>
@@ -14,31 +144,27 @@
 
     <nav>
         <ul>
-            <li><a href="dashboard.html">Dashboard</a></li>
-            <li><a href="friends.html" class="active">Friends</a></li>
-            <li><a href="challenges.html">Challenges</a></li>
-            <li><a href="settings.html">Settings</a></li>
+            <li><a href="main">Dashboard</a></li>
+            <li><a href="friends" class="active">Friends</a></li>
+            <li><a href="challenges">Challenges</a></li>
+            <li><a href="settings">Settings</a></li>
         </ul>
     </nav>
 
     <main>
 
         <section class="friend-requests">
-            <h2>Incoming Friend Requests</h2>
+            
             <ul id="friendRequestsList">
                 <!-- Example of an incoming friend request -->
-                <li id="request-Alice">
-                    <span>Alice Cooper</span>
-                    <button class="accept">Accept</button>
-                    <button class="deny">Deny</button>
-                </li>
+                
             </ul>
         </section>
 
         <section class="send-request">
             <h2>Send a Friend Request</h2>
-            <form id="sendRequestForm">
-                <input type="text" id="friendUsername" placeholder="Enter friend's username" required>
+            <form id="sendRequestForm" action="javascript:;" onsubmit="submitRequeset()">
+                <input type="text" name="friendUser" placeholder="Enter friend's username" required>
                 <button type="submit">Send Request</button>
             </form>
             
@@ -59,11 +185,12 @@
             </ul>
         </section>
 
-        <section class="activity-feed">
-            <h2>Recent Activities</h2>
-            <ul>
-                <li>John Doe just set a new squat PR of 300 lbs!</li>
-                <li>Jane Smith completed a 5k run in 20 minutes!</li>
+        <section class="request-list">
+			<h2>Outgoing Friend Requests</h2>
+            <ul id="requestslistOut">
+            </ul>
+			<h2>Incoming Friend Requests</h2>
+            <ul id="requestslistIn">
             </ul>
         </section>
     </main>
@@ -72,7 +199,7 @@
         <p>© 2024 Gym Tracker. All rights reserved.</p>
     </footer>
 
-    <script>
+    <!-- <script>
         document.addEventListener('DOMContentLoaded', function() {
             const acceptButtons = document.querySelectorAll('.accept');
             const friendsList = document.getElementById('friendsList');
@@ -129,8 +256,7 @@
                 });
             });
         });
-        </script>
+        </script> -->
         
 </body>
 </html>
-

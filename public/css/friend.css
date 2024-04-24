@@ -76,6 +76,7 @@ main {
 
 .friend-list ul {
     list-style-type: none;
+    margin-right: 15px;
 }
 
 .friend-list li {
@@ -108,18 +109,55 @@ main {
 }
 
 /* Activity Feed Styles */
-.activity-feed {
+.request-list {
     background: #fff; /* white background to contrast with the dark theme */
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
+.request-list h2, .request-list span {
+    color: #333; /* improved visibility against white background */
+}
+
+.request-list ul {
+    list-style-type: none;
+}
+
+.request-list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.request-list img {
+    flex: 0 0 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.request-list button {
+    padding: 8px 16px;
+    background: #900; /* dark red */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.request-list button:hover {
+    background-color: #600; /* even darker red */
+}
+
 .activity-feed h2 {
     color: #333; /* enhanced contrast on white background */
 }
 
-./* Activity Feed Styles */
+/* Activity Feed Styles */
 .activity-feed {
     background: #fff; /* white background to contrast with the dark theme */
     padding: 20px;

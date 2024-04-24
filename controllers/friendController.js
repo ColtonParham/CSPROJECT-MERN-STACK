@@ -31,18 +31,25 @@ const removeFriend = async (req, res) => {
     if (!req.userID) return res.status(500).json({"Message": "Non-authenticated user when authentication is expected"});
     if (!req.body?.friendID) return res.status(400).json({"Message": "Must include the userID of the friend you wish to remove (friendID)"});
     if (!val.isMongoId(req.body.friendID)) return res.status(400).json({"Message": "Invalid friendID"});
-    const result = await Friend.deleteOne({userIDs: {$all: [req.userID, req.body.friendID]}})
-    if (result.acknowledged)
+    const result = await Friend.deleteOne({userIDs: {$all: [ObjectId(req.userID), ObjectId(req.body.friendID)]}})
+    if (result.deletedCount>0)
         return res.status(201).json({"Message": "Successfully removed friend"});
     else
-        return res.status(400).json({"Message": "Invalid friendID"});
+        return res.status(400).json({"Message": "No matching friend found"});
 }
 
 const cancelFriendRequest = async (req, res) => {
     if (!req.userID) return res.status(500).json({"Message": "Non-authenticated user when authentication is expected"});
-    if (!req.body?.requestID) return res.status(400).json({"Message": "Must include requestID to remove"})
+    if (!req.body?.friendID) return res.status(400).json({"Message": "Must include friendID to remove"});
+    const friendID = req.body.friendID
+    if (!val.isMongoId(friendID)) return res.status(400).json({"Message": "Invalid friendID"});
     
-    const result = await Friend.deleteOne({userIDs: {$all: [req.userID, req.body.friendID]}})
+    const result = await FriendRequest.deleteOne({"friendID": friendID, "userID": req.userID});
+    console.log(result)
+    if (result.deletedCount>0)
+        return res.status(201).json({"Message": "Successfully canceled friend request"});
+    else
+        return res.status(400).json({"Message": "No matching friend request found sent to friend ID " + friendID});
 }
 
 const getSentRequests = async (req, res) => {
@@ -53,7 +60,17 @@ const getSentRequests = async (req, res) => {
         if (!val.isInt(req.body.limit, {gt: 0})) return res.status(400).json({"Message": "limit value has to be an integer greater than 0"});
     const requests = await FriendRequest.find({userID: req.userID}, {userID: 0}, {limit: req.body.limit}).exec();
     if (!requests) return res.status(204).json({"Message": "No pending requests found"});
-    return res.status(201).send(requests);
+    console.log(requests)
+    const requestsList = [];
+    for await (const friend of requests) {
+        var friendUser = friend.friendID.toString();
+        console.log("User ID: " + req.userID)
+        friendName = await User.findById(friendUser);
+        console.log("Friend Name: " + friendName);
+        requestsList.push({"user": friendName.username, "userID": friendName._id, "requestID": friend._id})
+    }
+
+    return res.status(201).send(requestsList);
 }
 
 const getPendingRequests = async (req, res) => {
@@ -64,7 +81,16 @@ const getPendingRequests = async (req, res) => {
         if (!val.isInt(req.body.limit, {gt: 0})) return res.status(400).json({"Message": "limit value has to be an integer greater than 0"});
     const requests = await FriendRequest.find({friendID: req.userID}, {friendID: 0}, {limit: req.body.limit}).exec();
     if (!requests) return res.status(204).json({"Message": "No pending requests found"});
-    return res.status(201).send(requests);
+    console.log(requests)
+    const requestsList = [];
+    for await (const friend of requests) {
+        var friendUser = friend.userID.toString();
+        console.log("User ID: " + req.userID)
+        friendName = await User.findById(friendUser);
+        console.log("Friend Name: " + friendName);
+        requestsList.push({"user": friendName.username, "userID": friendName._id, "requestID": friend._id})
+    }
+    return res.status(201).send(requestsList);
 }
 
 const sendFriendRequest = async (req, res) => {
@@ -75,15 +101,20 @@ const sendFriendRequest = async (req, res) => {
 
     const friend = await User.findOne({username: req.body.friendUser.toLowerCase()}).exec();
     if (!friend)
-        return res.stauts(204).json({"Message": "User not found"});
+        return res.status(204).json({"Message": "User not found"});
     console.log("Friend ID: " + friend._id);
     console.log("User ID: " + req.userID);
     const dupe = await FriendRequest.findOne({friendID: friend._id, userID: req.userID}).exec()
     if (dupe){
-        console.log("Duplicate Friend request!")
-        console.log(dupe)
-        console.log("End of dupe")
+        console.log("Duplicate Friend request!");
+        console.log(dupe);
+        console.log("End of dupe");
         return res.status(409).json({"Message": "Friend request already sent"});
+    }
+    const dupe2 = await Friend.findOne({userIDs: {$all: [friend._id, req.userID]}}).exec()
+    if (dupe2) {
+        console.log("Duplicate friend");
+        return res.status(400).json({"Message": "Already friends with user " + friend.username})
     }
     try {
         //create and store the new friendRequest
