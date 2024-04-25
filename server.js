@@ -15,6 +15,25 @@ const mongoose = require('mongoose');
 const connectDB = require('./config/dbConn');
 const PORT = process.env.PORT || 3500;
 const rateLimiter = require("./middleware/limiter");
+const https = require("https");
+const fs = require("fs");
+
+// Https options
+const httpsPort = 443;
+var useHttps = false;
+var httpsOptions;
+
+// If using HTTPS, check if required certs are in ./rsa folder, and use them. Otherwise, disable https.
+if (useHttps && fs.existsSync('rsa/server-key.pem') && fs.existsSync('rsa/server-cert.pem')) {
+    httpsOptions = {
+        key: fs.readFileSync('./rsa/server-key.pem'),
+        cert: fs.readFileSync('./rsa/server-cert.pem')
+        }
+} else
+    useHttps = false;
+
+
+
 mongoose.set('strictQuery', false);
 
 app.disable('x-powered-by'); // Removes information about server to reduce information exposure. Will checkout additional middleware named helmet. May assist in preventing information exposure of middlewear software.
@@ -77,7 +96,10 @@ app.all('*', (req, res) => {
 
 app.use(errorHandler);
 
+
 mongoose.connection.once('open', () => {
     console.log('Connected to MongoDB');
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+    if (useHttps)
+        https.createServer(httpsOptions, app).listen(httpsPort, () => console.log(`Secure server running on port ${httpsPort}`))
 });
