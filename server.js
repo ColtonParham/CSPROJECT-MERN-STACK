@@ -19,10 +19,9 @@ const https = require("https");
 const fs = require("fs");
 
 // Https options
-const httpsPort = 443;
-var useHttps = false;
+const httpsPort = process.env.HTTPS_PORT || 443;
+var useHttps = process.env.USE_HTTPS === "true" || false;
 var httpsOptions;
-
 // If using HTTPS, check if required certs are in ./rsa folder, and use them. Otherwise, disable https.
 if (useHttps && fs.existsSync('rsa/server-key.pem') && fs.existsSync('rsa/server-cert.pem')) {
     httpsOptions = {
