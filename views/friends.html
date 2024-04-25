@@ -18,7 +18,10 @@
             friendsUl.textContent = '';         // Removes all children and replaces it with an empty string;
             friends = await getFriends();
             friends.sort(function(a,b) {
-                return a.user>b.user ? 1:-1;
+                if (a.user==b.user)
+                    return 0
+                else
+                    return a.user>b.user ? 1:-1;
             });
             console.log(friends)
             if (friends.length==0) {
@@ -35,8 +38,6 @@
                     btn.onclick = async function(){console.log('Removing Friend with userID: ' + friend.userID);await removeFriend(friend.userID); updateFriendsList()};
                     elem.append(img, span, btn);
                     return friendsUl.appendChild(elem);
-                    console.log(elem)
-                    console.log(friend)
                 });
                 return;
             }
@@ -50,10 +51,16 @@
             requestsIn = await getIncommingRequests()
             requestsOut = await getOutgoingRequests();
             requestsIn.sort(function(a,b) {
-                return a.user>b.user ? 1:-1;
+                if (a.user==b.user)
+                    return 0
+                else
+                    return a.user>b.user ? 1:-1;
             });
             requestsOut.sort(function(a,b) {
-                return a.user>b.user ? 1:-1;
+                if (a.user==b.user)
+                    return 0
+                else
+                    return a.user>b.user ? 1:-1;
             });
             console.log(requestsIn);
             console.log(requestsOut);
