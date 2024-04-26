@@ -17,4 +17,6 @@ router.post('/request/send', friendController.sendFriendRequest);
 
 router.post('/request/respond', friendController.sendFriendResponse);
 
+router.post('/request/cancel', friendController.cancelFriendRequest);
+
 module.exports = router;

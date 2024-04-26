@@ -7,13 +7,13 @@
 
 body {
     font-family: 'Open Sans', sans-serif;
-    background-color: #f0f2f5;
-    color: #333;
+    background-color: #1c1c1c; /* dark gray to near black background */
+    color: #f0f0f0; /* changed to lighter gray for better readability */
     line-height: 1.6;
 }
 
 header {
-    background: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+    background: linear-gradient(to right, #900000 0%, #ff0000 100%); /* dark red to bright red gradient */
     color: white;
     text-align: center;
     padding: 20px 0;
@@ -22,8 +22,8 @@ header {
 }
 
 footer {
-    background-color: #333;
-    color: white;
+    background-color: #1a1a1a; /* slightly lighter black for visual depth */
+    color: #fff;
     text-align: center;
     padding: 10px 0;
     font-size: 14px;
@@ -32,7 +32,7 @@ footer {
 /* Navigation Styles */
 nav ul {
     list-style-type: none;
-    background-color: #323232;
+    background-color: #000; /* black background for navbar */
     text-align: center;
     padding: 10px;
     margin: 0;
@@ -44,13 +44,13 @@ nav ul li {
 
 nav ul li a {
     text-decoration: none;
-    color: white;
+    color: #fff; /* white text */
     padding: 15px 20px;
     display: inline-block;
 }
 
 nav ul li a:hover, nav ul li a.active {
-    background-color: #555;
+    background-color: #900; /* dark red */
     transition: background-color 0.3s;
 }
 
@@ -64,19 +64,19 @@ main {
 
 /* Friends List Styles */
 .friend-list {
-    background: #ffffff;
+    background: #fff; /* white background to contrast with the dark theme */
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-.friend-list h2 {
-    color: #333;
-    margin-bottom: 15px;
+.friend-list h2, .friend-list span {
+    color: #333; /* improved visibility against white background */
 }
 
 .friend-list ul {
     list-style-type: none;
+    margin-right: 15px;
 }
 
 .friend-list li {
@@ -94,14 +94,9 @@ main {
     margin-right: 15px;
 }
 
-.friend-list span {
-    font-weight: bold;
-    flex: 1;
-}
-
 .friend-list button {
     padding: 8px 16px;
-    background: #4CAF50;
+    background: #900; /* dark red */
     color: white;
     border: none;
     border-radius: 5px;
@@ -110,20 +105,68 @@ main {
 }
 
 .friend-list button:hover {
-    background-color: #45a049;
+    background-color: #600; /* even darker red */
+}
+
+/* Activity Feed Styles */
+.request-list {
+    background: #fff; /* white background to contrast with the dark theme */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.request-list h2, .request-list span {
+    color: #333; /* improved visibility against white background */
+}
+
+.request-list ul {
+    list-style-type: none;
+}
+
+.request-list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.request-list img {
+    flex: 0 0 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.request-list button {
+    padding: 8px 16px;
+    background: #900; /* dark red */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.request-list button:hover {
+    background-color: #600; /* even darker red */
+}
+
+.activity-feed h2 {
+    color: #333; /* enhanced contrast on white background */
 }
 
 /* Activity Feed Styles */
 .activity-feed {
-    background: #ffffff;
+    background: #fff; /* white background to contrast with the dark theme */
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 .activity-feed h2 {
-    color: #333;
-    margin-bottom: 15px;
+    color: #333; /* dark gray for better visibility */
 }
 
 .activity-feed ul {
@@ -133,13 +176,22 @@ main {
 .activity-feed li {
     margin-bottom: 10px;
     padding: 10px;
-    background: #f0f2f5;
-    border-left: 5px solid #4CAF50;
+    background: #f0f0f5; /* very light gray background for the items to improve contrast */
+    color: #333; /* dark text for better readability */
+    border-left: 5px solid #900; /* dark red border as a visual highlight */
     transition: border-left 0.3s;
 }
 
 .activity-feed li:hover {
-    border-left: 5px solid #45a049;
+    border-left: 5px solid #600; /* darker red when hovered */
 }
+
+
+
+/* Maintain other styles, ensuring they apply within the context of the new grid layout */
+
+
+
+
 
 

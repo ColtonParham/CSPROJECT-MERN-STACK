@@ -25,13 +25,14 @@ const uploadPFP = async (req, res) => {
 
 const getImage = async (req, res) => {
     const cookies = req.cookies;
+    rootPath = './public/img/'
     if (!req.params?.id) req.params.id = req.cookies.UserID;
     if (!val.isMongoId(req.params.id+"")) return res.status(400).json({ "Message": "Invalid userID (field id)", "Given": req.params.id});
-    profilePath = path.join(__dirname, '..', 'public', 'img', 'pfp', req.params.id + '.png');
+    profilePath = path.join('public', 'img', 'pfp', req.params.id + '.png');
     if (fs.existsSync(profilePath))
-        res.sendFile(profilePath);
+        res.sendFile('/pfp/' + req.params.id + '.png', {root: rootPath});
     else
-        res.sendFile(path.join(__dirname, '..', 'public', 'img', 'default.png'));
+        res.sendFile(path.join('default.png'), {root: rootPath});
 }
 
 module.exports = { uploadPFP, getImage };
