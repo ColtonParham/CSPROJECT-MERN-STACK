@@ -4,7 +4,7 @@ const allowedOrigins = [
     'http://localhost:3500',
     'http://localhost:3000',
     'https://localhost',
-    'https://cs-project-2c7c24e37b8c.herokuapp.com/'
+    'https://cs-project-2c7c24e37b8c.herokuapp.com'
 ];
 
 module.exports = allowedOrigins;
