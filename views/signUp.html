@@ -13,11 +13,16 @@
     <div class="container">
         <form action="javascript:;" class = "form" onsubmit="submitForm()">
             <h2>Register</h2>
+            <p class = "requiredEmail">Age *</p>
+            <input type="number" name = "age" id="age" class="box" placeholder="Enter Age">
+            <p class = "requiredEmail">Email *</p>
+            <input type="email" name = "email" id="email" class="box" placeholder="Enter Email">
             <p class = "requiredEmail">User *</p>
             <input type="user" name = "user" id="user" class="box" placeholder="Enter Username">
             <p class = "required">Password *</p>
             <input type = "password" name ="pwd" class="box" placeholder="Enter Password">
             <input type ="submit" value="Sign Up" id="submit", >
+           
         </form>
         <script>
             async function submitForm() {
