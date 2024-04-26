@@ -1,0 +1,78 @@
+body {
+    font-family: "Rubik", sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh; /* Set minimum height of the body to 100% of the viewport height */
+    display: flex;
+    flex-direction: column;
+    background-color: #eceaea;
+}
+h1{
+    font-size: 45px;
+}
+header {
+    background-color: #a28282;
+    color: #fff;
+    padding: 10px;
+    font-size: 20px;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+    font-size: 20px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #fff;
+}
+
+main {
+    padding: 20px;
+}
+
+h2 {
+    font-size: 40px;
+}
+
+p {
+    font-size: 20px;
+}
+
+.content {
+    background-color: #d9d5d5;
+    text-align: center;
+    padding: 50px 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.image {
+    flex: 1;
+    padding: 20px;
+}
+
+.image img {
+    max-width: 100%;
+    height: auto;
+}
+
+.text {
+    flex: 2;
+    padding: 20px;
+}
+
+footer {
+    background-color: #a28282;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    margin-top: auto; /* Push the footer to the bottom */
+}
