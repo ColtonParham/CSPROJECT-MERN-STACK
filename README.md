@@ -1,4 +1,6 @@
-# CSPROJECT
+# CSPROJECT-MERN-STACK
+**Link**
+https://cs-project-2c7c24e37b8c.herokuapp.com/login
 
 A web application is a comprehensive platform designed to enable gym enthusiasts to track their lifting progress, including exercises, weights lifted, and total volume over time. It integrates social features, allowing users to add friends, share their lifting achievements, and compare their progress with others. This project leverages the MERN stack (MongoDB Atlas, Express.js, React, Node.js) along with HTML, CSS, and JavaScript to create a dynamic, interactive, and user-friendly experience.
 
