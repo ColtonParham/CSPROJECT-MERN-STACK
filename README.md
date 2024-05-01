@@ -101,10 +101,12 @@ Defends against DOS attacks
 Mitigates brute-force attacks
 Cross Origin control
 Prevents access from non-authorized sources
+Protections Against SQL injections with rate limiters
 
 Slides: https://docs.google.com/presentation/d/1JvkxPrBfr4v9jTFCr0rDZJSlverRoB6B-wcZrtcNCYY/edit?usp=sharing
 
-
+How to use: 
+Website is able to be used by creating simple users with usernames and passwords, be able to traverse the data, add friends, and view their progress.
 
 
 
