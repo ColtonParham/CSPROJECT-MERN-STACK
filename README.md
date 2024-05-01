@@ -4,12 +4,8 @@ https://cs-project-2c7c24e37b8c.herokuapp.com/login
 
 A web application is a comprehensive platform designed to enable gym enthusiasts to track their lifting progress, including exercises, weights lifted, and total volume over time. It integrates social features, allowing users to add friends, share their lifting achievements, and compare their progress with others. This project leverages the MERN stack (MongoDB Atlas, Express.js, React, Node.js) along with HTML, CSS, and JavaScript to create a dynamic, interactive, and user-friendly experience.
 
-MongoDB/MongoDB Atlas: A NoSQL database that stores user data, including profiles, lift records, and social interactions (friends, posts, comments). MongoDB's flexible schema allows for the easy addition of new exercises or metrics as the application evolves.
-Opted to focus with MongoDB’s platform Atlas, a cloud platform structured similar to AWS, in terms of not relying on local hosting. 
-
-With MongoDB Atlas, this allows us to have a more reliable source of connectivity between backend, and frontend consistently, and allows us to have a local server for redundancy in case of server outages, or troubles. 
-
-Defined schema directly with form fields to be utilized directly in tandem with node.js. 
+1. MongoDB/MongoDB Atlas: A NoSQL database that stores user data, including profiles, lift records, and social interactions (friends, posts, comments). MongoDB's flexible schema allows for the easy addition of new exercises or metrics as the application evolves.
+Opted to focus with MongoDB’s platform Atlas, a cloud platform structured similar to AWS, in terms of not relying on local hosting. With MongoDB Atlas, this allows us to have a more reliable source of connectivity between backend, and frontend consistently, and allows us to have a local server for redundancy in case of server outages, or troubles. Defined schema directly with form fields to be utilized directly in tandem with node.js. 
 
 2. Express.js: This back-end web application framework running on top of Node.js simplifies the creation of server-side logic. It handles requests such as user authentication, data retrieval, and API endpoints for interacting with the front end.
 
