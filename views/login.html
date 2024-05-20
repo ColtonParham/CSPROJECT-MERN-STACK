@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Tracker Login</title>
+    <link rel="stylesheet" href="css/login.css">
+    <script src = "js/api.js"></script>
+</head>
+<body>
+    <div class="container">
+        <form action="javascript:;" class = "form" onsubmit="submitForm()">
+            <h2>SIGN IN</h2>
+            <input type="user" name = "user" class="box" placeholder="Enter Username">
+            <input type = "password" name ="pwd" class="box" placeholder="Enter Password">
+            <input type ="submit" value="SIGN IN" id = "submit">
+            <a href="pwreset">Forget Password?</a>
+            
+            <p>Don't have an account?<a href ="signUp"> <b>Sign up</b></a></p>
+        </form>
+        <script>
+            async function submitForm() {
+                try {
+                    data = new FormData(document.forms[0]);
+                    await xmlRequest("POST", "/auth", data);
+                    window.location.href = "/main";
+                } catch (err) {
+                    console.log(err);
+                    switch (err.status) {
+                        case 401:
+                            alert("Incorrect username or password")
+                            break;
+                        default:
+                            alert("Error: " + JSON.parse(err.response).message);
+                    }
+                }
+            }
+        </script>
+        <div class="side">
+            <img src="img/loginImage.png" alt="login image">
+        </div>
+    </div>
+
+</body>
+</html>

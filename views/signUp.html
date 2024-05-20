@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Tracker Login</title>
+    <link rel="stylesheet" href="css/signUp.css">
+    <script src = "js/api.js"></script>
+</head>
+<body>
+    <div class="container">
+        <form action="javascript:;" class = "form" onsubmit="submitForm()">
+            <h2>Register</h2>
+            <p class = "requiredEmail">Age *</p>
+            <input type="number" name = "age" id="age" class="box" placeholder="Enter Age">
+            <p class = "requiredEmail">Email *</p>
+            <input type="email" name = "email" id="email" class="box" placeholder="Enter Email">
+            <p class = "requiredEmail">User *</p>
+            <input type="user" name = "user" id="user" class="box" placeholder="Enter Username">
+            <p class = "required">Password *</p>
+            <input type = "password" name ="pwd" class="box" placeholder="Enter Password">
+            <input type ="submit" value="Sign Up" id="submit", >
+           
+        </form>
+        <script>
+            async function submitForm() {
+                try {
+                    data = new FormData(document.forms[0]);
+                    console.log(data);
+                    response = await xmlRequest("POST", "register", data);
+                    alert("Account created, redirecting to login");
+                    window.location.href = "login";
+                } catch (err) {
+                    console.log(err);
+                    switch (err.status) {
+                        case 409:
+                            alert("Error: username already taken");
+                            break;
+                        default:
+                            alert("Error: " + JSON.parse(err.response).message);
+                    }
+                }
+            }
+        </script>
+
+        <div class="side">
+            <img src="img/loginImage.png" alt="login image">
+        </div>
+    </div>
+
+</body>
+</html>

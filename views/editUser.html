@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Tracker Edit User Profile</title>
+    <link rel="stylesheet" href="css/editUser.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src = "js/api.js"></script>
+    <script>
+        window.onload= function() {
+            document.querySelector("#upload").addEventListener("change", uploadFile, false);
+        }
+        async function uploadFile() {
+            uploadData = this.files[0]
+            const fileData = new FormData();
+            fileData.append("pfp", uploadData);
+            try {
+                await xmlRequest("POST", "api/profile/upload", fileData, true);
+                document.querySelector(".ProfileImg").src = document.querySelector(".ProfileImg").src + "?_=" + (new Date()).getTime(); // Refresh pfp img
+            } catch (err) {
+                switch (err.status) {
+                    case 403:
+                        alert("Authorization error! Please logout and log back in");
+                        break;
+                    default:
+                        alert("Error: " + JSON.parse(err.response).message);
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="sidenav">
+        <div class = "top">
+            <div class = "logo">
+                <i class = "bx bx-dumbbell"></i>
+                <span>StrongSquad</span>
+            </div>
+            <i class ="bx bx-menu" id = btn></i>
+        </div>
+        <ul>
+            <li>
+                <a href="main">
+                    <i class="bx bxs-grid-alt"></i>
+                    <span class ="nav-item">Dashboard</span>
+                </a>
+                <span class="tooltip">Dashboard</span>
+            </li>
+            <li>
+                <a href="about">
+                    <i class="bx bxs-info-circle"></i>
+                    <span class ="nav-item">About</span>
+                </a>
+                <span class="tooltip">About</span>
+            </li>
+            <li>
+                <a href="services">
+                    <i class="bx bxs-food-menu"></i>
+                    <span class ="nav-item">Services</span>
+                </a>
+                <span class="tooltip">Services</span>
+            </li>
+            <li>
+                <a href="contact">
+                    <i class="bx bxs-contact"></i>
+                    <span class ="nav-item">Contact</span>
+                </a>
+                <span class="tooltip">Contact</span>
+            </li>
+            <li>
+                <a href="/logout">
+                    <i class="bx bx-log-out"></i>
+                    <span class ="nav-item">Logout</span>
+                </a>
+                <span class="tooltip">Logout</span>
+            </li>
+        </ul>
+    </div>
+
+    
+    <div class="main-content">
+        <div class="container">
+            <div class="ProfileCard">
+                <div class="cardHeader">Profile Picture </div>
+                <div class="cardBody">
+                    <img class="ProfileImg" src="api/profile/img" alt="">
+                    <input id="upload" class="uploadBtn" type="file"></input>
+                </div>
+            </div>
+
+            <div class="UserCard">
+                <div class="cardHeader">User Details</Details></div>
+                <div class="UserCardBody">
+                    <form>
+                        <div class="field">
+                            <label class="fieldlabel">Username</label>
+                            <input type="username" name = "username" class="box" placeholder="Enter Username">
+                        </div>
+
+                        <div class="field">
+                            <label class="fieldlabel">First Name</label>
+                            <input type="fname" name = "fname" class ="box" placeholder="Enter First Name">
+                        </div>
+
+                        <div class = "field">
+                            <label class = "fieldlabel">Last Name</label>
+                            <input type="lname" name = "lname" class="box" placeholder="Enter Last Name">
+                        </div>
+
+                        <div class = "field">
+                            <label class = "fieldlabel">Email</label>
+                            <input type="email" name = "email" class = "box" placeholder = "Enter Email">
+                        </div>
+
+                        <div class ="field">
+                            <label class = "fieldlabel"> Password</label>
+                            <input type = "password" name = "password" class = "box" placeholder ="Enter Password">
+                        </div>
+
+                        <button class="submitBtn" type = "button"> Submit Changes</button>
+                    </form> 
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        let btn = document.querySelector('#btn')
+        let sidenav = document.querySelector('.sidenav')
+    
+        btn.onclick=function()
+        {
+            sidenav.classList.toggle('active')
+        };
+    </script>
+</body>
+</html>

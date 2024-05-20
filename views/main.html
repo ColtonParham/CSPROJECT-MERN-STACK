@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Black+Ops+One&family=Kanit&family=Lato&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Tracker</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Chart.js Library -->
+    <script src = 'js/api.js'></script>
+    <script>
+        window.onload= function() {
+            console.log("test");
+            if (getCookie("UserName")==null) {
+                document.querySelector("#username").textContent="Login"
+                document.querySelector("#username").href = 'login'
+                document.querySelector(".user-img").style="visibility: hidden";
+                document.querySelector(".user-dropdown-list").style="visibility: hidden";
+            } else {
+               document.querySelector("#username").textContent=getCookie("UserName");
+            }
+            document.querySelector(".user-dropdown").style="visibility: visible";
+            return;
+        }
+    </script>
+</head>
+<body>
+    <div class="sidenav">
+        <div class = "top">
+            <div class = "logo">
+                <i class = "bx bx-dumbbell"></i>
+                <span>StrongSquad</span>
+            </div>
+            <i class ="bx bx-menu" id="btn"></i>
+        </div>
+        
+        
+        <ul>
+            <li>
+                <a href="#">
+                    <i class="bx bxs-grid-alt"></i>
+                    <span class ="nav-item">Dashboard</span>
+                </a>
+                <span class="tooltip">Dashboard</span>
+            </li>
+            <li>
+                <a href="about">
+                    <i class="bx bxs-info-circle"></i>
+                    <span class ="nav-item">About</span>
+                </a>
+                <span class="tooltip">About</span>
+            </li>
+            <li>
+                <a href="services">
+                    <i class="bx bxs-food-menu"></i>
+                    <span class ="nav-item">Services</span>
+                </a>
+                <span class="tooltip">Services</span>
+            </li>
+            <li>
+                <a href="contact">
+                    <i class="bx bxs-contact"></i>
+                    <span class ="nav-item">Contact</span>
+                </a>
+                <span class="tooltip">Contact</span>
+            </li>
+            <li>
+                <a href="logout">
+                    <i class="bx bx-log-out"></i>
+                    <span class ="nav-item">Logout</span>
+                </a>
+                <span class="tooltip">Logout</span>
+            </li>
+        </ul>
+        
+    </div>
+    
+    <div class="main-content">
+        <div class = "container1">
+            <h1>Welcome to our Gym Tracker</h1>
+            <div class="user-dropdown">
+                <div class="user-dropdown-btn">
+					<div class = "user">
+					<img src = "api/profile/img" class = "user-img">
+					</div>
+                <a id="username">
+                    Username
+                </a>
+                </div>
+                
+                <ul class=" user-dropdown-list">
+                    <li class="user-dropdown-list-item">
+                        <a class="btn" href="editUser">
+                                Edit Profile
+                            </i>
+                        </a>                    
+                    </li>
+                    <li class="user-dropdown-list-item">
+                        <a href="friends">
+                                Friends
+                            </i>
+                        </a>                    
+                    </li>
+                    <li class="user-dropdown-list-item">
+                        <a href="logout">
+                                Logout
+                            </i>
+                        </a>                    
+                    </li>
+                </ul>
+            </div>
+            
+        </div>
+
+        <section id="home">
+            <hr>
+            <div class="BodyContainer">
+            <a class="StartedButton" href="function">Get Started
+                <p>Track your lifts, monitor your progress, and analyze your performance.</p>
+            </a>
+            
+            <a class ="SecondaryButton" href="maxCalc">Max Lift
+                <p>Calculate your estimated max lift based on your 5 rep max.</p>
+            </a>
+            <div class ="box">3</div>
+				<!-- Chart Container for Max Lift Chart -->
+                <div class="chart-container">
+                    <canvas id="homePageMaxLiftChart"></canvas>
+                </div>
+                <div class="progress-container">
+                    <h4>Weekly Progress</h4>
+                    <p>Total Weights Lifted: 950 lbs</p>
+                    <p>Sessions Completed: 5</p>
+                    <p>Consistency Score: 90%</p>
+                </div>
+                <!-- Existing boxes or other content -->
+            <div class ="box">
+                <div class ="boxHeader">Friend Activity</div>
+					<h3>Recent Workouts</h3>
+                        <ul>
+                            <li>John Smith: Squat - 250lbs x 5 reps</li>
+                            <li>Jane Doe: Bench Press - 135lbs x 3 reps</li>
+                        </ul>
+                        <h3>Personal Bests</h3>
+                        <ul>
+                            <li>John Smith: Deadlift - 300lbs (New Personal Best!)</li>
+                            <li>Jane Doe: 10k Run - 50 min (New Personal Best!)</li>
+                        </ul>
+                        <h3>Leaderboard</h3>
+                        <ul>
+                            <li>1. John Smith - Total Weight Lifted This Month: 10,000lbs</li>
+                            <li>2. Jane Doe - Total Weight Lifted This Month: 8,500lbs</li>
+                        </ul>
+                    </div>
+            </div>
+        </div>
+        </section>
+    </div>
+    
+    <footer>
+        <p>&copy; 2024 Strong Squad. All rights reserved.</p>
+	</footer>
+<script>
+        let btn = document.querySelector('#btn');
+        let sidenav = document.querySelector('.sidenav');
+
+        btn.onclick = function() {
+            sidenav.classList.toggle('active');
+        };
+
+        // Chart update function
+        function updateChartOnHomePage() {
+            var ctx = document.getElementById('homePageMaxLiftChart').getContext('2d');
+            var maxLiftHistory = JSON.parse(localStorage.getItem('maxLiftHistory')) || [];
+            if (window.homePageChart) {
+                window.homePageChart.destroy();
+            }
+            window.homePageChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: maxLiftHistory.map((_, index) => `Calculation ${index + 1}`),
+                    datasets: [{
+                        label: '1 Rep Max Over Time',
+                        backgroundColor: 'rgb(255, 99, 132)',
+                        borderColor: 'rgb(255, 99, 132)',
+                        data: maxLiftHistory.map(entry => entry.oneRepMax),
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateChartOnHomePage();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friends Activity - Gym Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/friend.css">
+	<script src="/js/api.js"></script>
+	<script>
+        window.onload = async function() {
+            updateFriendsList();
+            updateRequestsList();
+        };
+
+        async function updateFriendsList() {
+            friendsUl = document.querySelector("body > main > section.friend-list > ul");
+            friendsUl.textContent = '';         // Removes all children and replaces it with an empty string;
+            friends = await getFriends();
+            friends.sort(function(a,b) {
+                if (a.user==b.user)
+                    return 0
+                else
+                    return a.user>b.user ? 1:-1;
+            });
+            console.log(friends)
+            if (friends.length==0) {
+                return friendsUl.append(document.createTextNode("You don't have anyone friended yet"));
+            } else {
+                friends.forEach((friend) => {
+                    const elem = document.createElement("li");
+                    const img = document.createElement("img");
+                    const btn = document.createElement("button");
+                    const span = document.createElement("span");
+                    img.src = "api/profile/img/" + friend.userID;
+                    span.textContent = friend.user;
+                    btn.textContent = "Remove Friend"
+                    btn.onclick = async function(){console.log('Removing Friend with userID: ' + friend.userID);await removeFriend(friend.userID); updateFriendsList()};
+                    elem.append(img, span, btn);
+                    return friendsUl.appendChild(elem);
+                });
+                return;
+            }
+        }
+
+        async function updateRequestsList() {
+            requestsOutUl = document.querySelector("#requestslistOut")
+            requestsInUl = document.querySelector("#requestslistIn")
+            requestsOutUl.textContent = '';         // Removes all children and replaces it with an empty string;
+            requestsInUl.textContent = '';         // Removes all children and replaces it with an empty string;
+            requestsIn = await getIncommingRequests()
+            requestsOut = await getOutgoingRequests();
+            requestsIn.sort(function(a,b) {
+                if (a.user==b.user)
+                    return 0
+                else
+                    return a.user>b.user ? 1:-1;
+            });
+            requestsOut.sort(function(a,b) {
+                if (a.user==b.user)
+                    return 0
+                else
+                    return a.user>b.user ? 1:-1;
+            });
+            console.log(requestsIn);
+            console.log(requestsOut);
+                requestsOut.forEach((request) => {
+                    const elem = document.createElement("li");
+                    const img = document.createElement("img");
+                    const btn = document.createElement("button");
+                    const span = document.createElement("span");
+                    img.src = "api/profile/img/" + request.userID;
+                    span.textContent = request.user;
+                    btn.textContent = "Cancel request"
+                    btn.onclick = async function(){console.log('Canceling FR with userID: ' + request.userID);await cancelOutgoingRequest(request.userID); updateRequestsList()};
+                    elem.append(img, span, btn);
+                    return requestsOutUl.appendChild(elem);
+                });
+                requestsIn.forEach((request) => {
+                    const elem = document.createElement("li");
+                    const img = document.createElement("img");
+                    const btn1 = document.createElement("button");
+                    const btn2 = document.createElement("button");
+                    const span = document.createElement("span");
+                    img.src = "api/profile/img/" + request.userID;
+                    console.log(request)
+                    span.textContent = request.user;
+                    btn1.textContent = "Accept";
+                    btn1.onclick = async function(){await sendFriendResponse(request.requestID, true); updateFriendsList(); updateRequestsList()};
+                    btn2.textContent = "Deny";
+                    btn2.onclick = async function(){await sendFriendResponse(request.requestID, false); updateRequestsList()};
+                    elem.append(img, span, btn1, btn2);
+                    return requestsInUl.appendChild(elem);
+                });
+                return;
+            
+        }
+        async function submitRequeset() {
+            username = (new FormData(document.forms[0])).get('friendUser');
+            console.log("Sending friend request to user " + username);
+            try {
+                result = await addFriend(username);
+                if (result.length==0) {
+                    alert("User not found")
+                    console.log(result)
+                    return
+                }
+                console.log(result);
+                result = JSON.parse(result);
+                if (result?.success)
+                    alert(result.success)
+                updateRequestsList()
+            } catch (err) {
+                console.log(err);
+                alert(JSON.parse(err.response).Message)
+                return
+            }
+        }
+        async function getFriends() {
+            return JSON.parse(await xmlRequest("GET", '/api/friends/get',null,true))
+        }
+        async function addFriend(username) {
+            console.log("before")
+            var t=await xmlRequest("POST", "/api/friends/request/send", JSON.stringify({"friendUser": username}), true, "application/json");
+            console.log("aftere")
+            return t
+        }
+        async function sendFriendResponse(requestID, accept) {
+            console.log(requestID);
+            console.log(accept)
+            return await xmlRequest("POST", "/api/friends/request/respond", JSON.stringify({"requestID": requestID, "accept": accept}), true, "application/json");
+        }
+        async function getIncommingRequests() {
+            return JSON.parse(await xmlRequest("GET", "/api/friends/request/received", "", true));
+        }
+        async function getOutgoingRequests() {
+            return JSON.parse(await xmlRequest("GET", "/api/friends/request/sent", "", true));
+        }
+        async function cancelOutgoingRequest(friendID) {
+            return JSON.parse(await xmlRequest("POST", "/api/friends/request/cancel", JSON.stringify({"friendID": friendID}), true, "application/json"));
+        }
+        async function removeFriend(friendID) {
+            await xmlRequest("POST", "/api/friends/remove", JSON.stringify({"friendID": friendID}), true, "application/json");
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Friends Activity</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="main">Dashboard</a></li>
+            <li><a href="friends" class="active">Friends</a></li>
+        </ul>
+    </nav>
+
+    <main>
+
+        <section class="friend-requests">
+            
+            <ul id="friendRequestsList">
+                <!-- Example of an incoming friend request -->
+                
+            </ul>
+        </section>
+
+        <section class="send-request">
+            <h2>Send a Friend Request</h2>
+            <form id="sendRequestForm" action="javascript:;" onsubmit="submitRequeset()">
+                <input type="text" name="friendUser" placeholder="Enter friend's username" required>
+                <button type="submit">Send Request</button>
+            </form>
+            
+        </section>
+
+        <section class="friend-list">
+            <h2>Your Friends</h2>
+            <ul id="friendsList">
+                <li>
+                    <img src="profile1.jpg" alt="John Doe">
+                    <span>John Doe</span>
+                    <button class="remove">Remove Friend</button>
+                </li>
+                <li>
+                    <span>Requested: Emily Blunt</span>
+                    <button class="cancel">Cancel Request</button>
+                </li>
+            </ul>
+        </section>
+
+        <section class="request-list">
+			<h2>Outgoing Friend Requests</h2>
+            <ul id="requestslistOut">
+            </ul>
+			<h2>Incoming Friend Requests</h2>
+            <ul id="requestslistIn">
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2024 Gym Tracker. All rights reserved.</p>
+    </footer>
+
+    <!-- <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const acceptButtons = document.querySelectorAll('.accept');
+            const friendsList = document.getElementById('friendsList');
+            const sendRequestForm = document.getElementById('sendRequestForm');
+            const friendUsernameInput = document.getElementById('friendUsername');
+        
+            // Handling accepting friend requests
+            acceptButtons.forEach(button => {
+                button.addEventListener('click', function(event) {
+                    const listItem = event.target.parentNode;
+                    const friendName = listItem.querySelector('span').textContent;
+        
+                    // Remove the request from the friend requests section
+                    listItem.remove();
+        
+                    // Create a new list item for the accepted friend
+                    const newFriendItem = document.createElement('li');
+                    newFriendItem.innerHTML = `
+                        <img src="profile.jpg" alt="${friendName}">
+                        <span>${friendName}</span>
+                        <button class="remove">Remove Friend</button>
+                    `;
+        
+                    // Append the new friend to the friends list
+                    friendsList.appendChild(newFriendItem);
+                });
+            });
+        
+            // Handling sending friend requests
+            sendRequestForm.addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent the form from submitting normally
+        
+                const username = friendUsernameInput.value;
+        
+                // Example: Sending the friend request to the server
+                fetch('/api/send-friend-request', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username: username })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Request sent:', data);
+                    // Optionally update the UI to reflect the request
+                    const newSentRequestItem = document.createElement('li');
+                    newSentRequestItem.textContent = `Requested: ${username}`;
+                    document.getElementById('sentRequestsList').appendChild(newSentRequestItem);
+                    friendUsernameInput.value = ''; // Clear the input field
+                })
+                .catch(error => {
+                    console.error('Error sending request:', error);
+                });
+            });
+        });
+        </script> -->
+        
+</body>
+</html>

@@ -1,3 +1,5 @@
-node_modules
 logs
 .env
+node_modules
+public/img/pfp/*
+rsa
