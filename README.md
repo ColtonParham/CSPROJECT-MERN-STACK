@@ -4,8 +4,12 @@ https://cs-project-2c7c24e37b8c.herokuapp.com/login
 
 A web application is a comprehensive platform designed to enable gym enthusiasts to track their lifting progress, including exercises, weights lifted, and total volume over time. It integrates social features, allowing users to add friends, share their lifting achievements, and compare their progress with others. This project leverages the MERN stack (MongoDB Atlas, Express.js, React, Node.js) along with HTML, CSS, and JavaScript to create a dynamic, interactive, and user-friendly experience.
 
-1. MongoDB/MongoDB Atlas: A NoSQL database that stores user data, including profiles, lift records, and social interactions (friends, posts, comments). MongoDB's flexible schema allows for the easy addition of new exercises or metrics as the application evolves.
-Opted to focus with MongoDB’s platform Atlas, a cloud platform structured similar to AWS, in terms of not relying on local hosting. With MongoDB Atlas, this allows us to have a more reliable source of connectivity between backend, and frontend consistently, and allows us to have a local server for redundancy in case of server outages, or troubles. Defined schema directly with form fields to be utilized directly in tandem with node.js. 
+MongoDB/MongoDB Atlas: A NoSQL database that stores user data, including profiles, lift records, and social interactions (friends, posts, comments). MongoDB's flexible schema allows for the easy addition of new exercises or metrics as the application evolves.
+Opted to focus with MongoDB’s platform Atlas, a cloud platform structured similar to AWS, in terms of not relying on local hosting. 
+
+With MongoDB Atlas, this allows us to have a more reliable source of connectivity between backend, and frontend consistently, and allows us to have a local server for redundancy in case of server outages, or troubles. 
+
+Defined schema directly with form fields to be utilized directly in tandem with node.js. 
 
 2. Express.js: This back-end web application framework running on top of Node.js simplifies the creation of server-side logic. It handles requests such as user authentication, data retrieval, and API endpoints for interacting with the front end.
 
@@ -101,12 +105,21 @@ Defends against DOS attacks
 Mitigates brute-force attacks
 Cross Origin control
 Prevents access from non-authorized sources
-Protections Against SQL injections with rate limiters
 
 Slides: https://docs.google.com/presentation/d/1JvkxPrBfr4v9jTFCr0rDZJSlverRoB6B-wcZrtcNCYY/edit?usp=sharing
 
-How to use: 
-Website is able to be used by creating simple users with usernames and passwords, be able to traverse the data, add friends, and view their progress.
+# Attribution
+This repository was built off of and uses code from Dave Gray.
+Original code is from this repository: https://github.com/gitdagray/mongo_async_crud
 
+# Initialization
 
-
+Requires the creation of the .env file:
+The file includes 3 variables, ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET, and DATABASE_URI. The first two can be generated using node via the command: require('crypto').randomBytes(64).toString('hex')
+The DATABASE_URI requires the link to the mangoDB with authentication.
+ 
+Ex:
+ 
+ACCESS_TOKEN_SECRET=ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+REFRESH_TOKEN_SECRET=ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+DATABASE_URI = "mongodb+srv://USERNAME:PASSWORD@MONGDB_PATH.mongodb.net/db?retryWrites=true"
